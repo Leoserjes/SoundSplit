@@ -20,12 +20,13 @@ __pycache__/
 .ruff_cache/
 .mypy_cache/
 .venv/
+.rustup/
 venv/
 *.egg-info/
 
 # Rust / Tauri
 target/
-Cargo.lock
+apps/desktop/src-tauri/gen/
 
 # App artifacts
 storage/

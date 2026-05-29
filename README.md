@@ -82,3 +82,22 @@ npm run desktop:test
 ```
 
 Native Tauri builds also require Rust/Cargo via rustup. The JavaScript/Tauri CLI can be installed through npm, but the native shell will not build until the Rust toolchain is available.
+
+Run a native Tauri build:
+
+```bash
+npm --workspace apps/desktop run tauri -- build
+```
+
+On Windows, if Rust was installed but the current terminal does not yet see it, restart the terminal or add Cargo to the current session path:
+
+```powershell
+$env:Path = "$env:USERPROFILE\.cargo\bin;$env:Path"
+```
+
+If `rustup` cannot use the default user home in this environment, use a local ignored Rustup home for the project:
+
+```powershell
+$env:RUSTUP_HOME = "$PWD\.rustup"
+rustup default stable
+```
