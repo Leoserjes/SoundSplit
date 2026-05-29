@@ -1,0 +1,15 @@
+{
+  "name": "soundsplit",
+  "private": true,
+  "version": "0.1.0",
+  "description": "SoundSplit monorepo for harmonIA.",
+  "workspaces": [
+    "apps/desktop"
+  ],
+  "scripts": {
+    "desktop:dev": "npm --workspace apps/desktop run dev",
+    "desktop:tauri": "npm --workspace apps/desktop run tauri",
+    "desktop:build": "npm --workspace apps/desktop run build",
+    "desktop:test": "npm --workspace apps/desktop run test"
+  }
+}

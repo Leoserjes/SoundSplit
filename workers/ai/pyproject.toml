@@ -1,0 +1,20 @@
+[project]
+name = "soundsplit-ai-worker"
+version = "0.1.0"
+description = "AI worker for SoundSplit harmonIA audio processing."
+requires-python = ">=3.11"
+dependencies = [
+  "pydantic>=2.7.0"
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest>=8.0.0"
+]
+ml = [
+  "torch>=2.3.0",
+  "torchaudio>=2.3.0"
+]
+
+[tool.ruff]
+line-length = 100

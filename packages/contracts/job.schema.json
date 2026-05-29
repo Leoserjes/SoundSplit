@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://soundsplit.local/contracts/job.schema.json",
+  "title": "AnalysisJob",
+  "type": "object",
+  "required": ["id", "status", "source_type", "created_at"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["created", "uploading", "queued", "processing", "completed", "failed"]
+    },
+    "source_type": {
+      "type": "string",
+      "enum": ["upload", "youtube", "spotify"]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "error": {
+      "type": ["string", "null"]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifact"
+      }
+    }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "required": ["id", "kind", "name", "status"],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["stem", "midi", "musicxml", "pdf", "log"]
+        },
+        "name": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "ready", "failed"]
+        },
+        "uri": {
+          "type": ["string", "null"]
+        }
+      }
+    }
+  }
+}
