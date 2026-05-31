@@ -4,17 +4,31 @@ This document describes the agent roles used to build harmonIA.
 
 ## Agent Map
 
-| # | Agent | Owns | Primary Output |
-| --- | --- | --- | --- |
-| 1 | Engineering Manager (EM) | Architecture and technical direction | Architecture decisions, engineering standards, technical plans |
-| 2 | Product Manager (PM) | Product requirements, business rules, and sprint cards | User flows, acceptance criteria, release scope, success metrics |
-| 3 | Backend Developer | Backend implementation | FastAPI services, job orchestration, worker integration, unit tests |
-| 4 | Front-End Developer | Desktop/frontend implementation | Tauri/React screens, API integration, user workflow, unit tests |
-| 5 | QA | Test strategy and review | Test review, automated tests, test plans, regression coverage |
-| 6 | Release Coordinator | Release readiness and rollback recommendation | Release checklist, release notes, post-release validation, failure docs |
-| 7 | Agent Manager | Coordination across agents | Task ownership, handoff tracking, delivery status |
+| # | Name | Agent Role | Owns | Primary Output |
+| --- | --- | --- | --- | --- |
+| 1 | Ada | Engineering Manager (EM) | Architecture and technical direction | Architecture decisions, engineering standards, technical plans |
+| 2 | Maestro | Product Manager (PM) | Product requirements, business rules, and sprint cards | User flows, acceptance criteria, release scope, success metrics |
+| 3 | Turing | Backend Developer | Backend implementation | FastAPI services, job orchestration, worker integration, unit tests |
+| 4 | Pixel | Front-End Developer | Desktop/frontend implementation | Tauri/React screens, API integration, user workflow, unit tests |
+| 5 | Grace | QA | Test strategy and review | Test review, automated tests, test plans, regression coverage |
+| 6 | Linus | Release Coordinator | Release readiness and rollback recommendation | Release checklist, release notes, post-release validation, failure docs |
+| 7 | Atlas | Agent Manager | Coordination across agents | Task ownership, handoff tracking, delivery status |
 
-## Agent 1: Engineering Manager (EM)
+## GitHub Projects Agent Owner
+
+Use a single-select field named `Agent Owner` with these stable values:
+
+- `Ada`
+- `Maestro`
+- `Turing`
+- `Pixel`
+- `Grace`
+- `Linus`
+- `Atlas`
+
+When a card requires support from additional agents, keep `Agent Owner` assigned to the primary owner and list supporting agents in the issue body.
+
+## Agent 1: Ada - Engineering Manager (EM)
 
 Focus:
 
@@ -38,7 +52,7 @@ Decision rights:
 - Engineering standards.
 - Infrastructure direction.
 
-## Agent 2: Product Manager (PM)
+## Agent 2: Maestro - Product Manager (PM)
 
 Focus:
 
@@ -65,7 +79,7 @@ Decision rights:
 - Release feature priority.
 - Sprint card readiness.
 
-## Agent 3: Backend Developer
+## Agent 3: Turing - Backend Developer
 
 Focus:
 
@@ -89,7 +103,7 @@ Quality checks:
 - Contract alignment.
 - Backend unit/integration tests once the test suite exists.
 
-## Agent 4: Front-End Developer
+## Agent 4: Pixel - Front-End Developer
 
 Focus:
 
@@ -113,7 +127,7 @@ Quality checks:
 - Manual desktop/browser preview after significant UI changes.
 - Contract alignment with backend responses.
 
-## Agent 5: QA
+## Agent 5: Grace - QA
 
 Focus:
 
@@ -138,7 +152,7 @@ Quality checks:
 - Regression tests for bugs.
 - Coverage notes for flows that cannot yet be automated.
 
-## Agent 6: Release Coordinator
+## Agent 6: Linus - Release Coordinator
 
 Focus:
 
@@ -164,7 +178,7 @@ Rollback policy:
 - When rollback is not safe, recommend pausing the release and ask the EM for a recovery plan.
 - Every post-release failure must produce an incident note, even when rollback is not recommended.
 
-## Agent 7: Agent Manager
+## Agent 7: Atlas - Agent Manager
 
 Focus:
 

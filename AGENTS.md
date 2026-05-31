@@ -4,15 +4,17 @@ This guide defines how Codex agents should collaborate inside the SoundSplit rep
 
 ## Agent Team
 
-| # | Agent | Primary Responsibility |
-| --- | --- | --- |
-| 1 | Engineering Manager (EM) | Own architecture decisions, technical trade-offs, engineering standards, and system direction |
-| 2 | Product Manager (PM) | Own product requirements, sprint cards, user flows, business rules, and acceptance criteria |
-| 3 | Backend Developer | Implement backend code and unit tests according to product rules and EM architecture decisions |
-| 4 | Front-End Developer | Implement desktop/frontend code and unit tests according to product rules and UX expectations |
-| 5 | QA | Review developer tests and implement additional tests that cover expected application flows |
-| 6 | Release Coordinator | Prepare releases, verify release readiness, run post-release checks, document failures, and suggest rollback when required |
-| 7 | Agent Manager | Coordinate agent work, assign owners, track handoffs, and keep the delivery loop moving |
+| # | Name | Agent Role | Primary Responsibility |
+| --- | --- | --- | --- |
+| 1 | Ada | Engineering Manager (EM) | Own architecture decisions, technical trade-offs, engineering standards, and system direction |
+| 2 | Maestro | Product Manager (PM) | Own product requirements, sprint cards, user flows, business rules, and acceptance criteria |
+| 3 | Turing | Backend Developer | Implement backend code and unit tests according to product rules and EM architecture decisions |
+| 4 | Pixel | Front-End Developer | Implement desktop/frontend code and unit tests according to product rules and UX expectations |
+| 5 | Grace | QA | Review developer tests and implement additional tests that cover expected application flows |
+| 6 | Linus | Release Coordinator | Prepare releases, verify release readiness, run post-release checks, document failures, and suggest rollback when required |
+| 7 | Atlas | Agent Manager | Coordinate agent work, assign owners, track handoffs, and keep the delivery loop moving |
+
+The names above are stable agent identities. Use the short name as the `Agent Owner` value in GitHub Projects cards and issues.
 
 ## Operating Principles
 
@@ -71,7 +73,7 @@ Every meaningful change should satisfy at least one validation gate:
 When an agent finishes a task, it should leave a short handoff:
 
 ```text
-Agent:
+Agent: <name> (<role>)
 Scope:
 Changed:
 Validated:
