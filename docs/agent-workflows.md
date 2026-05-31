@@ -5,7 +5,7 @@
 Use this for most new harmonIA features.
 
 1. Agent Manager opens the task and assigns owner agents.
-2. Product Owner defines the user flow, business rules, and acceptance criteria.
+2. Product Manager writes/refines the card, user flow, business rules, and acceptance criteria.
 3. Engineering Manager defines architecture impact, contracts, and technical constraints.
 4. Backend Developer implements API, data, job, or worker behavior when needed, including unit tests.
 5. Front-End Developer implements the desktop/frontend workflow when needed, including unit tests.
@@ -32,7 +32,7 @@ Risks:
 Use this when product direction, folder structure, infrastructure, or data flow changes.
 
 1. Agent Manager records the requested change.
-2. Product Owner confirms the product reason and user/business impact.
+2. Product Manager confirms the product reason and user/business impact.
 3. Engineering Manager decides the technical approach.
 4. Backend Developer and Front-End Developer identify implementation impact.
 5. QA identifies regression areas.
@@ -54,7 +54,7 @@ Rollback recommendation:
 
 Use this when the change is primarily API, worker, queue, storage, or database behavior.
 
-1. Product Owner defines behavior and acceptance criteria.
+1. Product Manager defines behavior and acceptance criteria.
 2. Engineering Manager defines boundaries and contract impact.
 3. Backend Developer implements the backend change and unit tests.
 4. QA reviews backend unit tests and adds integration scenarios.
@@ -77,7 +77,7 @@ Release risk:
 
 Use this when the change is primarily the desktop user experience.
 
-1. Product Owner defines the user flow and acceptance criteria.
+1. Product Manager defines the user flow and acceptance criteria.
 2. Engineering Manager confirms API/contract constraints.
 3. Front-End Developer implements the UI, API integration, and unit tests.
 4. Backend Developer updates endpoints only if required.
@@ -100,7 +100,7 @@ Release risk:
 
 Use this when adding real audio processing behavior.
 
-1. Product Owner confirms the musician/producer value.
+1. Product Manager confirms the musician/producer value.
 2. Engineering Manager defines runtime, dependency, and architecture constraints.
 3. Backend Developer implements worker/API integration and unit tests.
 4. QA reviews unit tests and defines fixture-based tests and expected artifacts.
@@ -126,7 +126,7 @@ Use this when correcting broken behavior.
 
 1. Agent Manager assigns the owner agent.
 2. QA reproduces or defines the failing behavior when possible.
-3. Product Owner confirms expected behavior if ambiguous.
+3. Product Manager confirms expected behavior if ambiguous.
 4. Engineering Manager reviews technical risk if the fix touches architecture.
 5. Backend Developer or Front-End Developer implements the fix and unit test.
 6. QA reviews the unit test and adds a regression test.
@@ -148,7 +148,7 @@ Release impact:
 
 Use this before installing or upgrading packages.
 
-1. Product Owner confirms the dependency supports the product goal.
+1. Product Manager confirms the dependency supports the product goal.
 2. Engineering Manager confirms technical fit and alternatives.
 3. Backend Developer or Front-End Developer installs the dependency.
 4. QA records validation commands.
@@ -169,7 +169,7 @@ Release risk:
 
 Use this for each release candidate.
 
-1. Product Owner confirms the feature scope.
+1. Product Manager confirms the feature scope.
 2. Engineering Manager confirms technical readiness.
 3. QA runs the required test suite.
 4. Release Coordinator prepares release notes and tags/builds the release.

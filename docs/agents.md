@@ -7,7 +7,7 @@ This document describes the agent roles used to build harmonIA.
 | # | Agent | Owns | Primary Output |
 | --- | --- | --- | --- |
 | 1 | Engineering Manager (EM) | Architecture and technical direction | Architecture decisions, engineering standards, technical plans |
-| 2 | Product Owner (PO) | Product requirements and business rules | User flows, acceptance criteria, release scope |
+| 2 | Product Manager (PM) | Product requirements, business rules, and sprint cards | User flows, acceptance criteria, release scope, success metrics |
 | 3 | Backend Developer | Backend implementation | FastAPI services, job orchestration, worker integration, unit tests |
 | 4 | Front-End Developer | Desktop/frontend implementation | Tauri/React screens, API integration, user workflow, unit tests |
 | 5 | QA | Test strategy and review | Test review, automated tests, test plans, regression coverage |
@@ -26,7 +26,7 @@ Focus:
 Typical tasks:
 
 - Define architecture for new features.
-- Approve new dependencies with the PO.
+- Approve new dependencies with the PM.
 - Decide where business rules should live.
 - Review contracts and integration boundaries.
 - Identify technical risks before release.
@@ -38,18 +38,21 @@ Decision rights:
 - Engineering standards.
 - Infrastructure direction.
 
-## Agent 2: Product Owner (PO)
+## Agent 2: Product Manager (PM)
 
 Focus:
 
 - Define what harmonIA should do and why.
 - Translate product ideas into requirements and acceptance criteria.
 - Maintain the MVP scope and business rules.
+- Write and maintain sprint cards with clear owners, scope, metrics, and acceptance criteria.
 
 Typical tasks:
 
 - Define user flows.
+- Write sprint cards.
 - Write acceptance criteria.
+- Define success metrics.
 - Clarify edge cases.
 - Prioritize features.
 - Decide whether a feature belongs in the current release.
@@ -60,12 +63,13 @@ Decision rights:
 - User-facing behavior.
 - Business rules.
 - Release feature priority.
+- Sprint card readiness.
 
 ## Agent 3: Backend Developer
 
 Focus:
 
-- Write backend code according to PO requirements and EM architecture.
+- Write backend code according to PM requirements and EM architecture.
 - Own FastAPI behavior, service boundaries, job lifecycle, and worker integration.
 
 Typical tasks:
@@ -89,7 +93,7 @@ Quality checks:
 
 Focus:
 
-- Build the desktop product experience according to PO requirements and EM architecture.
+- Build the desktop product experience according to PM requirements and EM architecture.
 - Keep harmonIA useful for producers, musicians, and audio engineers.
 
 Typical tasks:
@@ -119,7 +123,7 @@ Focus:
 
 Typical tasks:
 
-- Create test plans from PO acceptance criteria.
+- Create test plans from PM acceptance criteria.
 - Review Backend Developer and Front-End Developer unit tests.
 - Write backend tests.
 - Write frontend tests once tooling is installed.
@@ -144,7 +148,7 @@ Focus:
 
 Typical tasks:
 
-- Confirm release scope with the PO.
+- Confirm release scope with the PM.
 - Confirm technical readiness with the EM.
 - Run the QA test suite for the release candidate.
 - Prepare release notes.
@@ -172,7 +176,7 @@ Typical tasks:
 - Assign primary and supporting agents.
 - Track handoffs.
 - Make sure each task has scope, owner, validation, and next action.
-- Escalate blockers to the PO or EM.
+- Escalate blockers to the PM or EM.
 - Prevent implementation work from starting without enough requirements and architecture context.
 
 Decision rights:
@@ -181,4 +185,4 @@ Decision rights:
 - Task ownership.
 - Handoff completeness.
 
-The Agent Manager does not override PO product decisions or EM architecture decisions.
+The Agent Manager does not override PM product decisions or EM architecture decisions.

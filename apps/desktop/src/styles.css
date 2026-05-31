@@ -26,6 +26,11 @@ button {
   gap: 8px;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
 .app-shell {
   display: grid;
   grid-template-columns: 260px minmax(0, 1fr);
@@ -133,6 +138,10 @@ h2 {
   padding: 0 16px;
 }
 
+.spin {
+  animation: spin 900ms linear infinite;
+}
+
 .analysis-grid {
   display: grid;
   gap: 20px;
@@ -217,7 +226,7 @@ h2 {
   align-items: center;
   display: grid;
   gap: 16px;
-  grid-template-columns: minmax(0, 1fr) 110px auto;
+  grid-template-columns: minmax(0, 1fr) 110px;
   min-height: 72px;
   padding: 12px 18px;
 }
@@ -245,18 +254,62 @@ h2 {
   padding: 6px 10px;
 }
 
-.artifact-actions {
-  display: flex;
-  gap: 8px;
+.job-summary {
+  background: #ffffff;
+  border: 1px solid #dde1d8;
+  border-radius: 8px;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1.6fr) minmax(110px, 0.5fr) minmax(140px, 0.8fr);
+  margin: 0;
+  padding: 18px;
 }
 
-.artifact-actions button {
-  background: #edf0eb;
-  border-radius: 8px;
+.job-summary div {
+  min-width: 0;
+}
+
+.job-summary dt {
+  color: #657269;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.job-summary dd {
   color: #27332c;
-  height: 38px;
-  justify-content: center;
-  width: 38px;
+  font-weight: 700;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.job-summary .status {
+  display: inline-flex;
+}
+
+.feedback-message {
+  border-radius: 8px;
+  padding: 18px;
+}
+
+.empty-message {
+  background: #ffffff;
+  border: 1px dashed #cbd2c9;
+  color: #657269;
+}
+
+.error-message {
+  background: #fff4f1;
+  border: 1px solid #edc3b9;
+  color: #8c3426;
+  font-weight: 700;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 860px) {
@@ -283,8 +336,8 @@ h2 {
   }
 
   .analysis-grid,
+  .job-summary,
   .artifact-row {
     grid-template-columns: 1fr;
   }
 }
-

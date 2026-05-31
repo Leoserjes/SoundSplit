@@ -7,7 +7,7 @@ This guide defines how Codex agents should collaborate inside the SoundSplit rep
 | # | Agent | Primary Responsibility |
 | --- | --- | --- |
 | 1 | Engineering Manager (EM) | Own architecture decisions, technical trade-offs, engineering standards, and system direction |
-| 2 | Product Owner (PO) | Own product requirements, user flows, business rules, and acceptance criteria |
+| 2 | Product Manager (PM) | Own product requirements, sprint cards, user flows, business rules, and acceptance criteria |
 | 3 | Backend Developer | Implement backend code and unit tests according to product rules and EM architecture decisions |
 | 4 | Front-End Developer | Implement desktop/frontend code and unit tests according to product rules and UX expectations |
 | 5 | QA | Review developer tests and implement additional tests that cover expected application flows |
@@ -18,20 +18,21 @@ This guide defines how Codex agents should collaborate inside the SoundSplit rep
 
 - Keep changes scoped to the current product milestone.
 - Preserve the desktop-first direction for harmonIA.
-- Product rules come from the PO.
+- Product rules and sprint cards come from the PM.
 - Architecture and engineering standards come from the EM.
 - Implementation agents should not redefine requirements while coding.
 - Backend and Front-End developers must create unit tests for the code they add or change.
 - QA should review developer unit tests and add broader flow/regression coverage wherever practical.
 - Release rollback is never autonomous. The Release Coordinator documents the failure and suggests rollback for user/EM approval.
 - Update documentation when architecture, product rules, workflows, or release policies change.
-- Do not introduce paid services, cloud dependencies, or heavy ML packages without an explicit EM + PO decision.
+- Do not introduce paid services, cloud dependencies, or heavy ML packages without an explicit EM + PM decision.
 
 ## Repository Ownership
 
 ```text
 docs/architecture.md        Engineering Manager
-docs/mvp-roadmap.md         Product Owner + Engineering Manager
+docs/mvp-roadmap.md         Product Manager + Engineering Manager
+docs/sprints/               Product Manager + Agent Manager
 docs/agents.md              Agent Manager
 docs/agent-workflows.md     Agent Manager
 docs/quality-gates.md       QA + Release Coordinator
@@ -46,7 +47,7 @@ packages/contracts          Engineering Manager + Backend Developer + Front-End 
 For each feature or update:
 
 1. Agent Manager records the task scope and owner agents.
-2. Product Owner defines requirements, business rules, and acceptance criteria.
+2. Product Manager writes/refines sprint cards, requirements, business rules, and acceptance criteria.
 3. Engineering Manager defines architecture impact and technical constraints.
 4. Backend Developer and/or Front-End Developer implement the change.
 5. Backend Developer and/or Front-End Developer create unit tests for changed code.

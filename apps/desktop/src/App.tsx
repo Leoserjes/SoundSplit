@@ -1,4 +1,8 @@
-import { Download, FileAudio, Music2, Play, UploadCloud, Wand2 } from "lucide-react";
+import { FileAudio, LoaderCircle, Music2, UploadCloud, Wand2 } from "lucide-react";
+import { useRef, useState } from "react";
+
+import { createJob } from "./api/jobs";
+import type { AnalysisJob } from "./api/types";
 
 const pipelineSteps = [
   "Import audio",
@@ -8,15 +12,42 @@ const pipelineSteps = [
   "Export scores"
 ];
 
-const artifacts = [
-  { name: "Vocals", type: "Stem", status: "Pending" },
-  { name: "Drums", type: "Stem", status: "Pending" },
-  { name: "Bass", type: "Stem", status: "Pending" },
-  { name: "Lead melody", type: "MIDI", status: "Pending" },
-  { name: "Lead score", type: "MusicXML", status: "Pending" }
-];
+const analysisSourceName = "demo.wav";
 
 export function App() {
+  const requestInFlight = useRef(false);
+  const [job, setJob] = useState<AnalysisJob | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleRunAnalysis() {
+    if (requestInFlight.current) {
+      return;
+    }
+
+    requestInFlight.current = true;
+    setIsLoading(true);
+    setError(null);
+    setJob(null);
+
+    try {
+      const createdJob = await createJob({
+        source_name: analysisSourceName,
+        source_type: "upload"
+      });
+      setJob(createdJob);
+    } catch (requestError) {
+      setError(
+        requestError instanceof Error
+          ? requestError.message
+          : "Could not start the analysis. Please try again."
+      );
+    } finally {
+      requestInFlight.current = false;
+      setIsLoading(false);
+    }
+  }
+
   return (
     <main className="app-shell">
       <aside className="sidebar">
@@ -42,9 +73,19 @@ export function App() {
             <p className="eyebrow">Desktop workspace</p>
             <h1>New music analysis</h1>
           </div>
-          <button className="primary-action" type="button">
-            <Wand2 aria-hidden="true" />
-            Run analysis
+          <button
+            aria-busy={isLoading}
+            className="primary-action"
+            disabled={isLoading}
+            onClick={handleRunAnalysis}
+            type="button"
+          >
+            {isLoading ? (
+              <LoaderCircle aria-hidden="true" className="spin" />
+            ) : (
+              <Wand2 aria-hidden="true" />
+            )}
+            {isLoading ? "Starting analysis..." : "Run analysis"}
           </button>
         </header>
 
@@ -76,32 +117,54 @@ export function App() {
           <div className="section-heading">
             <div>
               <p className="eyebrow">Artifacts</p>
-              <h2>Expected outputs</h2>
+              <h2>Analysis outputs</h2>
             </div>
           </div>
 
-          <div className="artifact-list">
-            {artifacts.map((artifact) => (
-              <article className="artifact-row" key={`${artifact.type}-${artifact.name}`}>
+          {error && (
+            <div className="feedback-message error-message" role="alert">
+              {error}
+            </div>
+          )}
+
+          {job ? (
+            <>
+              <dl className="job-summary" aria-label="Created analysis job">
                 <div>
-                  <strong>{artifact.name}</strong>
-                  <span>{artifact.type}</span>
+                  <dt>Job ID</dt>
+                  <dd>{job.id}</dd>
                 </div>
-                <span className="status">{artifact.status}</span>
-                <div className="artifact-actions">
-                  <button aria-label={`Preview ${artifact.name}`} type="button">
-                    <Play aria-hidden="true" />
-                  </button>
-                  <button aria-label={`Download ${artifact.name}`} type="button">
-                    <Download aria-hidden="true" />
-                  </button>
+                <div>
+                  <dt>Status</dt>
+                  <dd>
+                    <span className="status">{job.status}</span>
+                  </dd>
                 </div>
-              </article>
-            ))}
-          </div>
+                <div>
+                  <dt>Source</dt>
+                  <dd>{job.source_name ?? "Unknown source"}</dd>
+                </div>
+              </dl>
+
+              <div className="artifact-list">
+                {job.artifacts.map((artifact) => (
+                  <article className="artifact-row" key={artifact.id}>
+                    <div>
+                      <strong>{artifact.name}</strong>
+                      <span>{artifact.kind}</span>
+                    </div>
+                    <span className="status">{artifact.status}</span>
+                  </article>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className="feedback-message empty-message">
+              Run an analysis to create a job and see its artifacts.
+            </div>
+          )}
         </section>
       </section>
     </main>
   );
 }
-

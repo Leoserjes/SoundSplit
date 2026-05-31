@@ -3,7 +3,16 @@
   "$id": "https://soundsplit.local/contracts/job.schema.json",
   "title": "AnalysisJob",
   "type": "object",
-  "required": ["id", "status", "source_type", "created_at"],
+  "required": [
+    "id",
+    "status",
+    "source_type",
+    "source_name",
+    "created_at",
+    "updated_at",
+    "error",
+    "artifacts"
+  ],
   "properties": {
     "id": {
       "type": "string"
@@ -15,6 +24,9 @@
     "source_type": {
       "type": "string",
       "enum": ["upload", "youtube", "spotify"]
+    },
+    "source_name": {
+      "type": ["string", "null"]
     },
     "created_at": {
       "type": "string",

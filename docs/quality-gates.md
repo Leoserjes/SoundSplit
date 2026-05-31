@@ -56,7 +56,7 @@ For the API, add environment-specific commands once the Python package manager i
 
 ## Release Checklist
 
-- Did the PO confirm release scope?
+- Did the PM confirm release scope?
 - Did the EM confirm technical readiness?
 - Did QA run the required test suite?
 - Are release notes prepared?
