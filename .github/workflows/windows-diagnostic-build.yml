@@ -14,7 +14,6 @@ on:
       - "package.json"
       - "package-lock.json"
       - "docs/distribution/**"
-      - "docs/sprints/sprint-03-v0.4.0.md"
 
 permissions:
   contents: read
