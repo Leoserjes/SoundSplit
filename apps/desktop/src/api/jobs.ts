@@ -1,10 +1,5 @@
 import type { AnalysisJob, CreateJobRequest } from "./types";
-
-export const DEFAULT_API_BASE_URL = "http://127.0.0.1:8000";
-
-function getApiBaseUrl() {
-  return (import.meta.env.VITE_API_BASE_URL || DEFAULT_API_BASE_URL).replace(/\/+$/, "");
-}
+import { API_UNREACHABLE_MESSAGE, getApiBaseUrl } from "./config";
 
 async function parseJsonResponse(response: Response): Promise<AnalysisJob> {
   try {
@@ -35,7 +30,7 @@ export async function createJob(payload: CreateJobRequest): Promise<AnalysisJob>
       method: "POST"
     });
   } catch {
-    throw new Error("Could not reach the analysis service. Please try again.");
+    throw new Error(API_UNREACHABLE_MESSAGE);
   }
 
   if (!response.ok) {
@@ -57,7 +52,7 @@ export async function uploadAudioJob(file: File): Promise<AnalysisJob> {
       method: "POST"
     });
   } catch {
-    throw new Error("Could not reach the analysis service. Please try again.");
+    throw new Error(API_UNREACHABLE_MESSAGE);
   }
 
   if (!response.ok) {

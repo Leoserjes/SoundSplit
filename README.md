@@ -74,6 +74,19 @@ Run the desktop web shell:
 npm run desktop:dev
 ```
 
+### Desktop API Configuration
+
+The desktop web shell defaults to the local API at `http://127.0.0.1:8000`.
+
+Use these Vite environment variables when validating another connected API target:
+
+```bash
+VITE_API_ENVIRONMENT=development
+VITE_API_BASE_URL=http://127.0.0.1:8000
+```
+
+`VITE_API_ENVIRONMENT` accepts `development`, `staging`, or `production`. `VITE_API_BASE_URL` takes precedence when set and trailing slashes are removed before requests are sent. Staging and production URLs can remain placeholders until hosted API environments exist.
+
 Run validation:
 
 ```bash

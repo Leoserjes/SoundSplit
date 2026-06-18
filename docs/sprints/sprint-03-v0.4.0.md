@@ -138,7 +138,7 @@ Out:
 GitHub Issue: `#1`
 Agent Owner: Pixel
 Supporting: Ada, Grace
-Status: Ready
+Status: Done
 Dependency: Sprint 03 approval
 
 Value:
@@ -180,6 +180,33 @@ Validation:
 Release Impact:
 
 - Required before distribution testing can meaningfully represent connected desktop behavior.
+
+Implementation Notes:
+
+- Added a dedicated desktop API configuration module for `VITE_API_BASE_URL` and `VITE_API_ENVIRONMENT`.
+- Preserved the default local API target: `http://127.0.0.1:8000`.
+- Added explicit supported environment names: `development`, `staging`, and `production`.
+- Normalized configured API URLs by trimming whitespace and trailing slashes.
+- Updated the desktop connection failure message to tell testers to check that the API is running.
+- Documented desktop API configuration in `.env.example` and `README.md`.
+- Added focused frontend tests for API URL precedence, blank fallback, and environment names.
+
+Validation Result:
+
+- `npm run desktop:test` passed with 25 tests across 3 files.
+- `npm run desktop:build` passed.
+- Browser smoke was not run because this card changed API configuration and copy only, with coverage in frontend tests.
+
+Handoff:
+
+```text
+Agent: Pixel (Front-End Developer)
+Scope: SS3-001 environment-aware API configuration.
+Changed: Added typed desktop API config helpers, documented Vite API environment variables, preserved the local default API URL, and improved the unreachable-service message.
+Validated: npm run desktop:test passed with 25 tests; npm run desktop:build passed.
+Risks: Staging and production API URLs remain placeholders until hosted API environments exist.
+Next: Ada can start SS3-002 single-command startup with the API target behavior now documented.
+```
 
 ### SS3-002: Create Single-Command Developer Startup
 

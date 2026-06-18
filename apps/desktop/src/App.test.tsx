@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/re
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { App } from "./App";
+import { API_UNREACHABLE_MESSAGE } from "./api/config";
 import { uploadAudioJob } from "./api/jobs";
 import type { AnalysisJob } from "./api/types";
 
@@ -133,7 +134,7 @@ describe("App", () => {
   it("shows a friendly error when upload fails", async () => {
     const audioFile = new File(["audio-bytes"], "song.wav", { type: "audio/wav" });
     mockedUploadAudioJob.mockRejectedValue(
-      new Error("Could not reach the analysis service. Please try again.")
+      new Error(API_UNREACHABLE_MESSAGE)
     );
     render(<App />);
 
@@ -143,7 +144,7 @@ describe("App", () => {
     fireEvent.click(screen.getByRole("button", { name: "Run analysis" }));
 
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "Could not reach the analysis service. Please try again."
+      API_UNREACHABLE_MESSAGE
     );
   });
 

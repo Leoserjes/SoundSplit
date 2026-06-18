@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { createJob, DEFAULT_API_BASE_URL, uploadAudioJob } from "./jobs";
+import { API_UNREACHABLE_MESSAGE, DEFAULT_API_BASE_URL } from "./config";
+import { createJob, uploadAudioJob } from "./jobs";
 import type { AnalysisJob } from "./types";
 
 const createdJob: AnalysisJob = {
@@ -73,7 +74,7 @@ describe("createJob", () => {
         source_name: "demo.wav",
         source_type: "upload"
       })
-    ).rejects.toThrow("Could not reach the analysis service. Please try again.");
+    ).rejects.toThrow(API_UNREACHABLE_MESSAGE);
   });
 
   it("surfaces a friendly error when the service rejects the request", async () => {
@@ -164,7 +165,7 @@ describe("uploadAudioJob", () => {
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
 
     await expect(uploadAudioJob(file)).rejects.toThrow(
-      "Could not reach the analysis service. Please try again."
+      API_UNREACHABLE_MESSAGE
     );
   });
 
