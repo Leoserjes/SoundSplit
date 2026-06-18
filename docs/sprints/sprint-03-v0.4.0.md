@@ -424,7 +424,8 @@ Validation Result:
 - Workflow syntax was reviewed against GitHub Actions and Tauri guidance.
 - `Get-Content .github\workflows\windows-diagnostic-build.yml` reviewed locally.
 - `Get-Content apps\desktop\src-tauri\tauri.conf.json | ConvertFrom-Json | Out-Null` passed locally.
-- Remote workflow run pending after merge/push.
+- Remote workflow run `27737079325` passed on `master`.
+- Successful artifacts were uploaded as `harmonIA-windows-internal-installers` and `harmonIA-windows-diagnostic-logs`.
 
 Handoff:
 
@@ -432,8 +433,8 @@ Handoff:
 Agent: Linus (Release Coordinator)
 Scope: SS3-003 Windows CI build diagnostics.
 Changed: Added the Windows diagnostic GitHub Actions workflow and distribution documentation for internal artifacts and diagnostics.
-Validated: Local workflow review and Tauri config parse passed; GitHub Actions run should be triggered after push.
-Risks: Native Tauri build may still fail or exceed runtime on GitHub Actions; diagnostic logs should capture the failing step.
+Validated: Local workflow review and Tauri config parse passed; GitHub Actions run 27737079325 passed and uploaded internal installer plus diagnostic-log artifacts.
+Risks: Artifacts remain internal-only until RLS3-001, RLS3-002, and RLS3-003 complete the safety and sharing checks.
 Next: RLS3-001 can inspect any produced artifacts or diagnostic bundles; SS3-004 can use successful artifacts for clean-machine validation.
 ```
 
