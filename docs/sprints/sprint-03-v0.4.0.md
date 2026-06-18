@@ -213,7 +213,7 @@ Next: Ada can start SS3-002 single-command startup with the API target behavior 
 GitHub Issue: `#2`
 Agent Owner: Ada
 Supporting: Turing, Pixel, Grace
-Status: Ready
+Status: Done
 Dependency: Sprint 03 approval
 
 Value:
@@ -255,6 +255,39 @@ Validation:
 Release Impact:
 
 - Reduces onboarding and release validation friction.
+
+Implementation Notes:
+
+- Added `npm run dev` as the repository-owned single-command startup.
+- Added `scripts/dev-start.mjs` to start FastAPI and the desktop Vite shell together.
+- The API uses the repository `.venv` Python path directly.
+- The desktop process uses the existing `apps/desktop` npm workspace script.
+- Startup logs print the API and desktop URLs and the `Ctrl+C` shutdown instruction.
+- Added Windows child-process handling for duplicated `Path`/`PATH` variables.
+- Added Windows-safe npm invocation through `cmd.exe /d /s /c npm`.
+- Added `npm run dev:check` with Node built-in tests for the startup helper.
+- Updated `README.md` with combined and separate startup commands.
+
+Validation Result:
+
+- `npm run dev:check` passed with 5 tests.
+- `npm run dev` startup smoke confirmed API `/health` at `http://127.0.0.1:8000`.
+- `npm run dev` startup smoke confirmed the desktop shell at `http://127.0.0.1:1420`.
+- `npm run desktop:test` passed with 25 tests across 3 files.
+- `npm run desktop:build` passed.
+- `.venv\Scripts\python.exe -m pytest --rootdir=. apps\api\tests workers\ai\tests` passed with 18 tests.
+- `.venv\Scripts\python.exe -m compileall apps\api workers\ai` passed.
+
+Handoff:
+
+```text
+Agent: Ada (Engineering Manager)
+Scope: SS3-002 single-command developer startup.
+Changed: Added npm run dev, repository-owned process orchestration, startup helper tests, README usage docs, and Windows-safe child process handling.
+Validated: npm run dev:check; npm run dev smoke for API health and desktop shell; npm run desktop:test; npm run desktop:build; backend/worker pytest; Python compileall.
+Risks: The smoke cleanup uses forced process-tree termination in automation; normal interactive Ctrl+C remains the intended developer shutdown path.
+Next: Linus and Ada can use this startup path while working on SS3-005/SS3-003 distribution diagnostics.
+```
 
 ### SS3-005: Decide WebView2 Strategy
 

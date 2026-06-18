@@ -61,14 +61,22 @@ python -m venv .venv
 .venv\Scripts\python.exe -m pip install -e apps\api[test] -e workers\ai[test]
 ```
 
-Run the API:
+Run the API and desktop web shell together:
+
+```bash
+npm run dev
+```
+
+This starts the API at `http://127.0.0.1:8000` and the desktop web shell at `http://127.0.0.1:1420`. Press `Ctrl+C` in the terminal to stop both processes. The command uses the repository `.venv` Python path and the existing npm desktop workspace script.
+
+Run the API separately:
 
 ```bash
 cd apps/api
 ..\..\.venv\Scripts\python.exe -m uvicorn app.main:app --reload
 ```
 
-Run the desktop web shell:
+Run the desktop web shell separately:
 
 ```bash
 npm run desktop:dev
@@ -92,6 +100,7 @@ Run validation:
 ```bash
 npm run desktop:build
 npm run desktop:test
+npm run dev:check
 .venv\Scripts\python.exe -m pytest --rootdir=. apps\api\tests workers\ai\tests
 ```
 
