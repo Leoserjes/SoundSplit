@@ -366,7 +366,7 @@ Next: Linus can use this decision in SS3-003 Windows CI build diagnostics, and G
 GitHub Issue: `#3`
 Agent Owner: Linus
 Supporting: Ada, Pixel, Grace
-Status: Ready
+Status: Done
 Dependency: SS3-005 preferred before final installer expectations
 
 Value:
@@ -408,6 +408,34 @@ Validation:
 Release Impact:
 
 - Required before claiming reproducible Windows installer readiness. Does not by itself approve public installer sharing.
+
+Implementation Notes:
+
+- Added `.github/workflows/windows-diagnostic-build.yml`.
+- Added manual `workflow_dispatch` support and push triggers for distribution-relevant files.
+- Added Windows validation gates before native packaging.
+- Added a native Tauri build attempt after validation gates pass.
+- Uploaded MSI/EXE bundle outputs as short-retention internal diagnostic artifacts when build succeeds.
+- Uploaded diagnostic logs and build manifests on both success and failure.
+- Documented workflow purpose, triggers, permissions, and artifact policy in `docs/distribution/windows-diagnostic-build.md`.
+
+Validation Result:
+
+- Workflow syntax was reviewed against GitHub Actions and Tauri guidance.
+- `Get-Content .github\workflows\windows-diagnostic-build.yml` reviewed locally.
+- `Get-Content apps\desktop\src-tauri\tauri.conf.json | ConvertFrom-Json | Out-Null` passed locally.
+- Remote workflow run pending after merge/push.
+
+Handoff:
+
+```text
+Agent: Linus (Release Coordinator)
+Scope: SS3-003 Windows CI build diagnostics.
+Changed: Added the Windows diagnostic GitHub Actions workflow and distribution documentation for internal artifacts and diagnostics.
+Validated: Local workflow review and Tauri config parse passed; GitHub Actions run should be triggered after push.
+Risks: Native Tauri build may still fail or exceed runtime on GitHub Actions; diagnostic logs should capture the failing step.
+Next: RLS3-001 can inspect any produced artifacts or diagnostic bundles; SS3-004 can use successful artifacts for clean-machine validation.
+```
 
 ### SS3-004: Validate Clean-Machine Installation
 
