@@ -1,0 +1,59 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Open VS Code Agents Window",
+      "type": "shell",
+      "command": "code",
+      "args": ["--agents"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "dedicated"
+      }
+    },
+    {
+      "label": "Validate: desktop build",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "desktop:build"],
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Validate: desktop tests",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "desktop:test"],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Validate: backend and worker tests",
+      "type": "shell",
+      "command": ".venv\\Scripts\\python.exe",
+      "args": [
+        "-m",
+        "pytest",
+        "--rootdir=.",
+        "apps\\api\\tests",
+        "workers\\ai\\tests"
+      ],
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Validate: Python compile",
+      "type": "shell",
+      "command": ".venv\\Scripts\\python.exe",
+      "args": [
+        "-m",
+        "compileall",
+        "apps\\api",
+        "workers\\ai"
+      ],
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}

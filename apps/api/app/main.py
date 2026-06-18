@@ -10,7 +10,7 @@ DEVELOPMENT_CORS_ORIGINS = [
 
 app = FastAPI(
     title="SoundSplit API",
-    version="0.2.0",
+    version="0.3.0",
     description="Backend orchestration API for harmonIA.",
 )
 

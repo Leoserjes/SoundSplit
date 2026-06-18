@@ -88,9 +88,37 @@ created
 ```text
 GET  /health
 POST /v1/jobs
+POST /v1/jobs/upload
 GET  /v1/jobs/{job_id}
 GET  /v1/jobs/{job_id}/artifacts
 ```
 
 The first version can use local files and mocked worker output, then move to real object storage and model inference.
 
+## Sprint 02 Upload Contract
+
+Sprint 02 adds the first real local ingestion boundary without introducing persistence, queueing, or real AI processing.
+
+Endpoint:
+
+```text
+POST /v1/jobs/upload
+Content-Type: multipart/form-data
+Form field: file
+Response: AnalysisJob
+```
+
+Behavior:
+
+- Accept one local audio file through the multipart `file` part.
+- Accept `.wav`, `.mp3`, and `.flac` filenames up to 100 MB.
+- Reject unsupported extensions, empty files, and oversized files with clear client-facing errors.
+- Create an in-memory job with `source_type: "upload"`, `source_name` set to the uploaded filename, and `status: "queued"`.
+- Return the same `AnalysisJob` response shape used by `POST /v1/jobs`.
+- Discard uploaded bytes after validation and job creation for this sprint.
+
+Boundary decisions:
+
+- Storage, Redis queueing, audio decoding, normalization, and real AI processing remain deferred.
+- The desktop client submits the file only when the user starts analysis.
+- The shared upload request boundary is documented in `packages/contracts/upload.schema.json`.

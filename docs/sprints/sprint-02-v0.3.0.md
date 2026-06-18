@@ -104,30 +104,59 @@ Validation:
 
 Agent Owner: Ada
 Supporting: Turing, Pixel
-Status: Ready
+Status: Done
 Dependency: SS2-001
 
 Value:
 
 Frontend and backend need a simple upload contract that can evolve into object storage later.
 
+Architecture Decision:
+
+- Add `POST /v1/jobs/upload` as the Sprint 02 multipart endpoint.
+- Accept `multipart/form-data` with one binary file part named `file`.
+- Keep `POST /v1/jobs` for the existing mocked JSON job creation path.
+- Return the existing `JobResponse` / `AnalysisJob` shape used by the desktop app.
+- Create an in-memory queued job with `source_type: "upload"` and `source_name` set to the uploaded filename.
+- Validate uploaded bytes during request handling and discard them after the job is created.
+- Document the upload request boundary in `packages/contracts/upload.schema.json`.
+
+Validation Rules:
+
+- Accept `.wav`, `.mp3`, and `.flac` filenames.
+- Reject unsupported extensions.
+- Reject empty files.
+- Reject files larger than 100 MB (`104857600` bytes).
+- Return short, actionable validation errors.
+
 Acceptance Criteria:
 
-- Define a multipart upload endpoint and response shape.
-- Preserve existing job and artifact response fields.
-- Confirm that uploaded bytes are validated and discarded after request handling.
-- Document contract changes in `packages/contracts`.
+- Define a multipart upload endpoint and response shape. Done: `POST /v1/jobs/upload` returns the existing `AnalysisJob`.
+- Preserve existing job and artifact response fields. Done: `job.schema.json` remains the response contract.
+- Confirm that uploaded bytes are validated and discarded after request handling. Done for Sprint 02 architecture.
+- Document contract changes in `packages/contracts`. Done: `upload.schema.json` and contracts README.
 
 Validation:
 
 - Contract schema parses successfully.
 - Backend and frontend types remain aligned.
 
+Handoff:
+
+```text
+Agent: Ada (Engineering Manager)
+Scope: SS2-002 upload architecture and contract.
+Changed: Added the multipart upload endpoint decision, validation rules, shared upload request schema, and architecture notes.
+Validated: Contract schema parsing required; implementation tests remain in SS2-003 through SS2-007.
+Risks: Backend must bound multipart reads carefully so oversized uploads do not consume unbounded memory.
+Next: Turing can implement SS2-003 and SS2-006; Pixel can implement SS2-004 after product UI states are confirmed and SS2-005 after the API endpoint lands.
+```
+
 ### SS2-003: Implement Multipart Audio Upload API
 
 Agent Owner: Turing
 Supporting: Ada
-Status: Ready
+Status: Done
 Dependency: SS2-002
 
 Value:
@@ -148,11 +177,29 @@ Validation:
 - Backend and worker tests pass.
 - Python compile checks pass.
 
+Implementation Notes:
+
+- Added `POST /v1/jobs/upload` to the FastAPI jobs router.
+- Added chunked upload byte validation with the Sprint 02 100 MB limit.
+- Added filename extension, empty-file, and oversized-file rejection.
+- Added the minimal `python-multipart` parser dependency required by FastAPI upload handling.
+
+Handoff:
+
+```text
+Agent: Turing (Backend Developer)
+Scope: SS2-003 multipart audio upload API.
+Changed: Implemented the upload endpoint, validation helpers, and queued in-memory job creation using the uploaded filename.
+Validated: `.venv\Scripts\python.exe -m pytest --rootdir=. apps\api\tests workers\ai\tests` passed with 16 tests; `.venv\Scripts\python.exe -m compileall apps\api workers\ai` passed.
+Risks: Request parsing still depends on FastAPI/Starlette multipart behavior; future storage work should add stronger streaming/storage boundaries.
+Next: Pixel can wire the desktop client after SS2-004 selection and drag-and-drop behavior lands.
+```
+
 ### SS2-004: Add Desktop Audio Selection and Drag-and-Drop
 
 Agent Owner: Pixel
 Supporting: Maestro
-Status: Ready
+Status: Done
 Dependency: SS2-001
 
 Value:
@@ -173,11 +220,29 @@ Validation:
 - Desktop tests and build pass.
 - Browser smoke confirms selection states where practical.
 
+Implementation Notes:
+
+- Added a hidden desktop file input triggered by the existing `Select file` action.
+- Added drag-and-drop handling through the audio import area.
+- Added frontend validation for supported extensions and empty files.
+- Added selected-file rendering that replaces prior selections before submission.
+
+Handoff:
+
+```text
+Agent: Pixel (Front-End Developer)
+Scope: SS2-004 desktop audio selection and drag-and-drop.
+Changed: Implemented file selection, drag-and-drop, selected filename display, and frontend validation states.
+Validated: `npm run desktop:test` passed with 18 tests; `npm run desktop:build` passed; browser smoke confirmed the page loads and no-file validation is visible.
+Risks: Browser smoke cannot fully automate native file-picker selection in the current in-app browser tool, so file selection is covered by React tests.
+Next: Grace can review frontend unit tests during SS2-007.
+```
+
 ### SS2-005: Connect Desktop Upload to API Client
 
 Agent Owner: Pixel
 Supporting: Turing, Ada
-Status: Ready
+Status: Done
 Dependency: SS2-003, SS2-004
 
 Value:
@@ -198,11 +263,29 @@ Validation:
 - Desktop tests and build pass.
 - Browser smoke confirms Desktop -> Upload API -> queued job flow.
 
+Implementation Notes:
+
+- Added `uploadAudioJob(file)` to the isolated desktop API client.
+- Submits multipart form data to `POST /v1/jobs/upload` only after the user starts analysis.
+- Reused the existing loading, error, repeated-click prevention, and artifact rendering behavior.
+- Preserved the older JSON `createJob` client for the v0.2 mocked flow and compatibility tests.
+
+Handoff:
+
+```text
+Agent: Pixel (Front-End Developer)
+Scope: SS2-005 desktop upload API integration.
+Changed: Connected Run analysis to the selected local audio file and multipart upload client.
+Validated: `npm run desktop:test` passed with 18 tests; `npm run desktop:build` passed; live multipart API smoke returned a queued job for `smoke.wav`.
+Risks: Full browser-level file picker automation remains manual until the tool surface supports safe file selection.
+Next: Grace can review coverage and document remaining manual smoke gaps in SS2-007.
+```
+
 ### SS2-006: Expand Backend Upload Tests
 
 Agent Owner: Turing
 Supporting: Grace
-Status: Ready
+Status: Done
 Dependency: SS2-003
 
 Value:
@@ -222,11 +305,28 @@ Validation:
 
 - Backend and worker tests pass.
 
+Implementation Notes:
+
+- Added accepted upload coverage for `.wav`, `.mp3`, and `.flac`.
+- Added rejection coverage for unsupported extension, empty file, and oversized file.
+- Confirmed returned upload jobs keep the expected source filename, queued status, and mocked artifacts.
+
+Handoff:
+
+```text
+Agent: Turing (Backend Developer)
+Scope: SS2-006 backend upload test expansion.
+Changed: Added deterministic FastAPI TestClient coverage for upload success and validation failures.
+Validated: Backend and worker tests passed with 16 total tests.
+Risks: QA should still review whether manual browser/API smoke should cover multipart CORS and native desktop file submission.
+Next: Grace can review backend tests during SS2-007 after frontend upload coverage is added.
+```
+
 ### SS2-007: QA Review and Regression Coverage
 
 Agent Owner: Grace
 Supporting: Turing, Pixel, Maestro
-Status: Ready
+Status: Done
 Dependency: SS2-003, SS2-004, SS2-005, SS2-006
 
 Value:
@@ -244,11 +344,26 @@ Validation:
 
 - Desktop tests, build, backend/worker tests, and browser smoke pass.
 
+QA Report:
+
+- See `docs/sprints/sprint-02-qa-report.md`.
+
+Handoff:
+
+```text
+Agent: Grace (QA)
+Scope: SS2-007 Sprint 02 upload QA review and regression coverage.
+Changed: Added upload CORS regression coverage and documented automated/manual QA results.
+Validated: npm audit, desktop tests, desktop build, backend/worker tests, Python compile, browser smoke, and live multipart API smoke passed.
+Risks: Native file-picker and Tauri drag-and-drop remain manual checks outside the current browser automation surface.
+Next: Linus can prepare the v0.3.0 release review and request user approval before tagging.
+```
+
 ### SS2-008: Release v0.3.0
 
 Agent Owner: Linus
 Supporting: Atlas, Grace, Ada, Maestro
-Status: Ready
+Status: Done
 Dependency: SS2-001 through SS2-007
 
 Value:
@@ -272,6 +387,25 @@ Validation:
 - `.venv\Scripts\python.exe -m pytest --rootdir=. apps\api\tests workers\ai\tests`
 - `.venv\Scripts\python.exe -m compileall apps\api workers\ai`
 - Browser smoke for the upload flow.
+
+Release Review:
+
+- Release notes prepared in `docs/releases/v0.3.0.md`.
+- Validation gates passed after `npm audit fix` updated Vite to clear a high-severity advisory.
+- User approved release on 2026-06-18.
+- Version metadata was bumped to `0.3.0`.
+- Native Tauri build was attempted as an extra check and timed out after 10 minutes; no installer artifacts are included in this release checkpoint.
+
+Handoff:
+
+```text
+Agent: Linus (Release Coordinator)
+Scope: SS2-008 v0.3.0 release review.
+Changed: Prepared release notes, bumped release metadata, recorded validation results, known limitations, and rollback suggestion criteria.
+Validated: npm audit, desktop build, desktop tests, backend/worker tests, Python compile, schema parsing, browser smoke, and live multipart API smoke passed.
+Risks: Native Tauri installer build timed out; native upload interactions remain manual; upload persistence and real processing are deferred.
+Next: Commit and tag `v0.3.0`.
+```
 
 ## Sprint Risks
 

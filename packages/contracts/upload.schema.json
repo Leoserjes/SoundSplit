@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://soundsplit.local/contracts/upload.schema.json",
+  "title": "AnalysisUploadRequest",
+  "description": "Multipart/form-data contract for POST /v1/jobs/upload. The form includes one binary file part named file. The API validates the original filename extension and byte size, creates an in-memory queued analysis job, and discards uploaded bytes after request handling.",
+  "type": "object",
+  "required": ["file"],
+  "additionalProperties": false,
+  "properties": {
+    "file": {
+      "description": "Binary local audio file. Supported filename extensions are .wav, .mp3, and .flac. The maximum accepted size is 104857600 bytes. Empty files are rejected.",
+      "type": "string",
+      "contentEncoding": "binary"
+    }
+  }
+}

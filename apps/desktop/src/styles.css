@@ -163,7 +163,17 @@ h2 {
   justify-content: center;
   min-height: 360px;
   padding: 32px;
+  position: relative;
   text-align: center;
+}
+
+.dropzone.dragging {
+  background: #f7fbf5;
+  border-color: #7fbd7b;
+}
+
+.dropzone.has-file {
+  border-color: #b9d8b6;
 }
 
 .dropzone > svg {
@@ -176,6 +186,38 @@ h2 {
 .dropzone p {
   color: #5c6a61;
   max-width: 520px;
+}
+
+.file-input {
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  width: 1px;
+}
+
+.selected-file {
+  background: #f1f7ef;
+  border: 1px solid #c8dfc4;
+  border-radius: 8px;
+  display: grid;
+  gap: 4px;
+  margin: 10px 0 18px;
+  max-width: min(100%, 420px);
+  padding: 12px 14px;
+  text-align: left;
+}
+
+.selected-file span {
+  color: #5c6a61;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.selected-file strong {
+  color: #27332c;
+  overflow-wrap: anywhere;
 }
 
 .panel {

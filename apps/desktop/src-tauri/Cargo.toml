@@ -1,6 +1,6 @@
 [package]
 name = "harmonia"
-version = "0.2.0"
+version = "0.3.0"
 description = "harmonIA desktop app"
 authors = ["SoundSplit"]
 license = ""

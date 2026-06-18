@@ -1,0 +1,5 @@
+{
+  "chat.useCustomizationsInParentRepositories": true,
+  "chat.notifyWindowOnConfirmation": "always",
+  "chat.notifyWindowOnResponseReceived": "windowNotFocused"
+}
