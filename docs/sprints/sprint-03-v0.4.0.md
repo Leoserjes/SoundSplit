@@ -294,7 +294,7 @@ Next: Linus and Ada can use this startup path while working on SS3-005/SS3-003 d
 GitHub Issue: `#5`
 Agent Owner: Ada
 Supporting: Maestro, Linus
-Status: Ready
+Status: Done
 Dependency: Sprint 03 approval
 
 Value:
@@ -330,6 +330,36 @@ Validation:
 Release Impact:
 
 - Blocks final clean-machine installer confidence, but does not block local source development.
+
+Decision:
+
+- Keep Tauri's default `downloadBootstrapper` WebView2 strategy for Sprint 03 internal diagnostic builds.
+- Do not add `bundle.windows.webviewInstallMode` to `tauri.conf.json` in this sprint because the current implicit default already matches the decision.
+- Treat clean-machine installs without WebView2 and without internet as a documented distribution limitation, not as a connected-app runtime failure.
+
+Implementation Notes:
+
+- Added `docs/distribution/webview2-strategy.md`.
+- Compared downloaded bootstrapper, embedded bootstrapper, offline installer, fixed runtime, and skip modes.
+- Recommended the downloaded Evergreen bootstrapper for Sprint 03 to keep artifacts small and avoid premature offline packaging work.
+- Documented clean-machine validation notes and release-note language for `v0.4.0`.
+
+Validation Result:
+
+- Reviewed current `apps/desktop/src-tauri/tauri.conf.json`.
+- Parsed current Tauri config with PowerShell JSON conversion.
+- Verified the strategy against current Tauri v2 and Microsoft WebView2 distribution documentation.
+
+Handoff:
+
+```text
+Agent: Ada (Engineering Manager)
+Scope: SS3-005 WebView2 strategy decision.
+Changed: Documented the Sprint 03 WebView2 installation strategy and clean-machine validation expectations.
+Validated: Tauri config parsed successfully; current Tauri/Microsoft WebView2 docs reviewed.
+Risks: Clean machines without WebView2 may need internet during installation; offline installer mode remains deferred.
+Next: Linus can use this decision in SS3-003 Windows CI build diagnostics, and Grace can use it for SS3-004 clean-machine validation.
+```
 
 ### SS3-003: Add Windows CI Build
 
