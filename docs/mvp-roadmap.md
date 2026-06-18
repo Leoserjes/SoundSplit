@@ -40,6 +40,21 @@
 - Export PDF if notation tooling is available
 - Display artifacts in desktop app
 
+## Planned Sprint Mapping
+
+- Sprint 03 / `v0.4.0`: Connected desktop distribution readiness.
+- Sprint 04 / `v0.5.0`: Durable jobs and artifacts.
+- Sprint 05 / `v0.6.0`: Worker pipeline and audio normalization.
+- Sprint 06 / `v0.7.0`: First stem separation output.
+- Sprint 07 / `v0.8.0`: First MIDI transcription output.
+- Sprint 08 / `v0.9.0`: MusicXML and internal alpha readiness.
+
+Detailed planning:
+
+- `docs/sprints/sprint-04-v0.5.0.md`
+- `docs/sprints/sprint-05-v0.6.0.md`
+- `docs/sprints/sprint-roadmap-v0.7-v0.9.md`
+
 ## Later
 
 - YouTube/Spotify ingestion after legal and technical review
@@ -48,4 +63,3 @@
 - Score editor
 - DAW integration
 - Local/offline model mode
-
