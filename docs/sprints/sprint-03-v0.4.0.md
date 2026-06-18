@@ -418,13 +418,14 @@ Implementation Notes:
 - Uploaded MSI/EXE bundle outputs as short-retention internal diagnostic artifacts when build succeeds.
 - Uploaded diagnostic logs and build manifests on both success and failure.
 - Documented workflow purpose, triggers, permissions, and artifact policy in `docs/distribution/windows-diagnostic-build.md`.
+- Removed the sprint plan document from workflow push paths so CI evidence updates do not retrigger native installer builds.
 
 Validation Result:
 
 - Workflow syntax was reviewed against GitHub Actions and Tauri guidance.
 - `Get-Content .github\workflows\windows-diagnostic-build.yml` reviewed locally.
 - `Get-Content apps\desktop\src-tauri\tauri.conf.json | ConvertFrom-Json | Out-Null` passed locally.
-- Remote workflow run `27737079325` passed on `master`.
+- Remote workflow run `27737626166` passed on `master`.
 - Successful artifacts were uploaded as `harmonIA-windows-internal-installers` and `harmonIA-windows-diagnostic-logs`.
 
 Handoff:
@@ -433,7 +434,7 @@ Handoff:
 Agent: Linus (Release Coordinator)
 Scope: SS3-003 Windows CI build diagnostics.
 Changed: Added the Windows diagnostic GitHub Actions workflow and distribution documentation for internal artifacts and diagnostics.
-Validated: Local workflow review and Tauri config parse passed; GitHub Actions run 27737079325 passed and uploaded internal installer plus diagnostic-log artifacts.
+Validated: Local workflow review and Tauri config parse passed; GitHub Actions run 27737626166 passed and uploaded internal installer plus diagnostic-log artifacts.
 Risks: Artifacts remain internal-only until RLS3-001, RLS3-002, and RLS3-003 complete the safety and sharing checks.
 Next: RLS3-001 can inspect any produced artifacts or diagnostic bundles; SS3-004 can use successful artifacts for clean-machine validation.
 ```
