@@ -444,7 +444,7 @@ Next: RLS3-001 can inspect any produced artifacts or diagnostic bundles; SS3-004
 GitHub Issue: `#4`
 Agent Owner: Grace
 Supporting: Linus, Pixel, Ada
-Status: Ready
+Status: Blocked
 Dependency: SS3-003
 
 Value:
@@ -486,6 +486,26 @@ Validation:
 Release Impact:
 
 - Required before recommending installer artifacts for non-developer testers.
+
+QA Result:
+
+- SS3-004 is blocked because a valid clean-machine install requires Windows Sandbox or a clean VM, and no usable clean environment is available in this workspace.
+- Host installation was not performed.
+- `C:\WINDOWS\System32\WindowsSandbox.exe` was not found.
+- Querying the `Containers-DisposableClientVM` optional feature from the current session reported that elevation is required.
+- The artifact source and repeatable MSI/NSIS validation checklist are documented in `docs/sprints/sprint-03-ss3-004-clean-machine-installation-qa.md`.
+- Grace recommends keeping installer artifacts internal-only and not moving this card to release review until the checklist is executed in a clean environment.
+
+Handoff:
+
+```text
+Agent: Grace (QA)
+Scope: SS3-004 clean-machine installation validation.
+Changed: Added a QA blocker result, artifact-source reference, and repeatable clean-machine validation checklist for MSI and NSIS artifacts.
+Validated: Reviewed SS3-004 acceptance criteria, RLS3-001 artifact safety findings, WebView2 strategy, and local clean-environment availability; did not install MSI or EXE on the host machine.
+Risks: No actual clean-machine install evidence exists yet; connected API success may need a staging API build or explicit clean-machine backend setup because current diagnostics target a local API URL.
+Next: Run the checklist in Windows Sandbox or a clean VM, capture exact install/launch/API observations, then update this card with pass/fail evidence.
+```
 
 ### SS3-006: Plan Windows Code Signing
 
