@@ -904,7 +904,7 @@ Next: Linus can prepare SS3-008 release notes and request user approval before c
 GitHub Issue: `#19`
 Agent Owner: Linus
 Supporting: Atlas, Grace, Ada, Maestro
-Status: Release Review
+Status: Done
 Dependency: SS3-001 through SS3-007 and RLS3-001 through RLS3-003
 
 Value:
@@ -962,7 +962,10 @@ Release Review:
 - RLS3-001, RLS3-002, and RLS3-003 are complete.
 - SS3-004 remains blocked because clean-machine installation requires Windows Sandbox or a clean VM that is not available from this workspace.
 - External installer sharing remains blocked.
-- Version metadata and the `v0.4.0` tag are pending explicit user approval.
+- User approved proceeding with SS3-008 on 2026-06-19.
+- Version metadata was bumped to `0.4.0`.
+- Release gates passed after the version metadata bump.
+- The `v0.4.0` tag is approved for creation from the release metadata commit.
 
 Handoff:
 
@@ -970,9 +973,9 @@ Handoff:
 Agent: Linus (Release Coordinator)
 Scope: SS3-008 v0.4.0 release preparation.
 Changed: Prepared v0.4.0 release notes, recorded release readiness, known limitations, installer sharing status, and rollback suggestion criteria.
-Validated: Reused SS3-007 validation results, Windows diagnostic workflow run 27737626166, and RLS3-001 through RLS3-003 release-safety evidence.
-Risks: SS3-004 clean-machine installation is blocked; installer artifacts are unsigned/internal-only; version metadata and the v0.4.0 tag still require user approval.
-Next: Ask the user for approval before bumping version metadata, creating the v0.4.0 tag, or publishing anything.
+Validated: Reused SS3-007 validation results, Windows diagnostic workflow run 27737626166, and RLS3-001 through RLS3-003 release-safety evidence; reran release gates after the metadata bump.
+Risks: SS3-004 clean-machine installation is blocked; installer artifacts are unsigned/internal-only; external sharing remains blocked.
+Next: Push the v0.4.0 tag and run post-release validation.
 ```
 
 ## Recommended Sequencing
@@ -1014,6 +1017,6 @@ Next: Ask the user for approval before bumping version metadata, creating the v0
 - QA report is complete.
 - Release notes are prepared.
 - RLS safety gates are complete or documented as blockers.
-- User approves any release tag.
+- User approved the `v0.4.0` release checkpoint on 2026-06-19.
 - Distribution limitations are clear and visible.
 - Installer artifacts are not shared externally unless explicitly approved.
