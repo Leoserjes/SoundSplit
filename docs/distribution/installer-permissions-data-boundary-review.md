@@ -101,6 +101,29 @@ Current limitation: there is no runtime allow-list or CSP-level network policy d
 - Backend data-retention rules for uploaded audio are not covered by this desktop installer review and should be documented before non-developer tester workflows expand.
 - Clean-machine install evidence remains blocked by SS3-004 until Windows Sandbox or a clean VM is available.
 
+## Grace QA Review
+
+Grace reviewed Ada's RLS3-002 permission and data-boundary review against the current desktop source, tests, Tauri shell, and sprint evidence. QA did not install the MSI or EXE on the host.
+
+QA confirms the manual upload flow review passes for Sprint 03 internal distribution review:
+
+- `App.tsx` uses a single browser `File` from either the file input or drag/drop, validates supported audio extensions, rejects empty files, enforces the 100 MB limit, and submits only after `Run analysis`.
+- `jobs.ts` appends that same selected `File` to multipart field `file` and posts it to `/v1/jobs/upload`.
+- `App.test.tsx` and `jobs.test.ts` cover selecting and uploading the exact file, dropped-file selection, no-file guard, validation failures, upload failure messaging, and duplicate-click blocking.
+- `Cargo.toml`, `main.rs`, `tauri.conf.json`, and the missing `src-tauri/capabilities` directory match Ada's finding that no native plugins, custom commands, or app-specific capability grants are present.
+- Source search found no browser persistence APIs, object URL creation, `FileReader`, directory upload, privileged Tauri IPC, or Tauri filesystem/dialog/shell usage in the reviewed desktop code.
+
+Validation:
+
+- `npm run desktop:test` passed with 25 tests across 3 files.
+- `apps/desktop/src-tauri/tauri.conf.json` parsed as valid JSON.
+
+Remaining QA caveats:
+
+- This QA review validates the documented manual flow and code boundaries, not a clean-machine installer execution.
+- SS3-004 remains the required clean VM/Sandbox installation gate.
+- Production CSP/API target allow-listing and backend uploaded-audio retention remain follow-up risks before wider distribution.
+
 ## Result
 
 RLS3-002 passes for Sprint 03 internal distribution review.

@@ -703,6 +703,16 @@ Review Result:
 - Network behavior is documented as browser `fetch` to the configured API base URL, defaulting to `http://127.0.0.1:8000`.
 - Follow-up risks are documented for production CSP/API target allow-listing, future Tauri plugin capabilities, backend uploaded-audio retention, and clean-machine validation.
 
+QA Review:
+
+- Grace reviewed Ada's RLS3-002 document against `App.tsx`, `App.test.tsx`, `jobs.ts`, `jobs.test.ts`, `Cargo.toml`, `main.rs`, `tauri.conf.json`, and the Tauri capabilities directory state.
+- QA confirmed the manual upload-flow boundary: a single user-selected or dropped browser `File` is validated, held in React memory, and uploaded only after `Run analysis`.
+- QA confirmed the API client appends the selected file as multipart field `file` and posts it to `/v1/jobs/upload`.
+- QA confirmed source search found no browser persistence APIs, object URL creation, `FileReader`, directory upload, privileged Tauri IPC, or Tauri filesystem/dialog/shell usage in the reviewed desktop code.
+- `npm run desktop:test` passed with 25 tests across 3 files.
+- `apps/desktop/src-tauri/tauri.conf.json` parsed as valid JSON.
+- QA did not install the MSI or EXE on the host; SS3-004 remains the clean-machine installer execution gate.
+
 Handoff:
 
 ```text
@@ -712,6 +722,15 @@ Changed: Added the installer permissions and data boundary review document; docu
 Validated: Reviewed desktop source/tests, Tauri config/Rust shell, release artifact safety review, Windows diagnostic workflow, WebView2 strategy, and Tauri permission/capability docs; searched for privileged Tauri APIs and browser persistence APIs; did not install MSI or EXE on the host.
 Risks: Production CSP/API target allow-list is not defined; future Tauri plugins need scoped capabilities; backend uploaded-audio retention is outside this review; clean-machine install remains blocked until SS3-004 can run in a clean VM or Windows Sandbox.
 Next: Main thread can review and update GitHub issue #16; Linus can proceed with RLS3-003 using this review as a sharing gate input.
+```
+
+```text
+Agent: Grace (QA)
+Scope: RLS3-002 QA validation of Ada's installer permissions and data boundary review.
+Changed: Added QA review evidence to the Sprint 03 card and the RLS3-002 distribution review document.
+Validated: Reviewed Ada's document, sprint card, desktop upload flow, API upload client, desktop tests, Tauri config/Rust shell, Cargo dependencies, and capability directory state; ran desktop tests and parsed the Tauri config JSON; did not install MSI or EXE on the host.
+Risks: Clean-machine installer execution remains unvalidated until SS3-004 can run in Windows Sandbox or a clean VM; production CSP/API allow-listing and backend uploaded-audio retention remain future hardening items before wider distribution.
+Next: Main thread can update GitHub issue #16; Linus can use the QA-signed RLS3-002 evidence for RLS3-003 while keeping SS3-004 as the install gate.
 ```
 
 ### RLS3-003: Internal Sharing, Provenance, And Integrity Checklist
