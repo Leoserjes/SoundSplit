@@ -735,10 +735,10 @@ Next: Main thread can update GitHub issue #16; Linus can use the QA-signed RLS3-
 
 ### RLS3-003: Internal Sharing, Provenance, And Integrity Checklist
 
-GitHub Issue: TBD after approval
+GitHub Issue: `#17`
 Agent Owner: Linus
 Supporting: Grace, Ada
-Status: Ready
+Status: Done
 Dependency: SS3-003, RLS3-001
 
 Value:
@@ -776,6 +776,35 @@ Validation:
 Release Impact:
 
 - Required before distributing installers to internal testers outside the development machine.
+- External sharing remains blocked because SS3-004 clean-machine installation validation is blocked and the user has not explicitly approved sharing beyond the core development team.
+
+Implementation Notes:
+
+- Added `docs/distribution/internal-artifact-sharing-provenance.md`.
+- Recorded the current Sprint 03 provenance fields for GitHub Actions run `27737626166`, source commit `12475db1bf9b07bf832e55c21d8cd4110de6d33d`, installer artifact ID `7714638513`, diagnostic artifact ID `7714638787`, artifact digests, and artifact expiration.
+- Documented the release target as `v0.4.0` while preserving the generated installer version/filenames at `0.3.0`.
+- Documented MSI, NSIS, and extracted app executable SHA-256 checksums from the RLS3-001 safety review.
+- Defined internal container naming rules, manifest expectations, approved recipient boundaries, unsigned-installer warnings, and sharing blockers.
+- Confirmed this card does not upload artifacts, share artifacts, install MSI/EXE, create public releases, implement code signing, or bypass SS3-004.
+
+Validation Result:
+
+- Release Coordinator review completed against SS3-003, RLS3-001, RLS3-002, SS3-004, and SS3-006 evidence.
+- Checksum expectations and Windows PowerShell verification commands are documented.
+- Current approved recipients are limited to the core development/release reviewers; Grace or an approved QA operator may receive artifacts only to perform SS3-004 in a clean VM/Sandbox.
+- Non-developer tester sharing, external sharing, public release links, GitHub Releases, app-store distribution, and production claims remain blocked.
+- No GitHub issue update was made from this Linus pass.
+
+Handoff:
+
+```text
+Agent: Linus (Release Coordinator)
+Scope: RLS3-003 internal sharing, provenance, and integrity checklist.
+Changed: Added the internal artifact sharing/provenance policy, recorded current Sprint 03 artifact provenance, documented checksum expectations, recipient boundaries, unsigned-installer warnings, and sharing blockers.
+Validated: Reused SS3-003 run evidence, RLS3-001 artifact IDs/digests/checksums, RLS3-002 permission/data-boundary result, SS3-004 blocked QA result, and SS3-006 signing decision; did not upload/share artifacts, install MSI/EXE, or create public releases.
+Risks: SS3-004 clean-machine installation remains blocked; artifacts are unsigned; GitHub-hosted artifacts expire on 2026-06-25; non-developer and external sharing remain blocked without explicit user approval.
+Next: Main thread can review and update GitHub issue #17; Grace can use this checklist when a clean VM/Sandbox is available for SS3-004.
+```
 
 ### SS3-007: QA Review and Distribution Regression Coverage
 
