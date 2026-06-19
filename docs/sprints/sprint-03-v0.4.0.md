@@ -795,6 +795,13 @@ Validation Result:
 - Non-developer tester sharing, external sharing, public release links, GitHub Releases, app-store distribution, and production claims remain blocked.
 - No GitHub issue update was made from this Linus pass.
 
+QA Review:
+
+- Grace reviewed the RLS3-003 checklist for readability and usability.
+- QA found the checklist understandable and usable for internal artifact handling because it clearly separates provenance, checksums, recipient boundaries, unsigned-installer warnings, blockers, and pre-share steps.
+- QA did not install, execute, upload, move, or share MSI/EXE artifacts.
+- No GitHub issue update was made from this Grace pass.
+
 Handoff:
 
 ```text
@@ -804,6 +811,15 @@ Changed: Added the internal artifact sharing/provenance policy, recorded current
 Validated: Reused SS3-003 run evidence, RLS3-001 artifact IDs/digests/checksums, RLS3-002 permission/data-boundary result, SS3-004 blocked QA result, and SS3-006 signing decision; did not upload/share artifacts, install MSI/EXE, or create public releases.
 Risks: SS3-004 clean-machine installation remains blocked; artifacts are unsigned; GitHub-hosted artifacts expire on 2026-06-25; non-developer and external sharing remain blocked without explicit user approval.
 Next: Main thread can review and update GitHub issue #17; Grace can use this checklist when a clean VM/Sandbox is available for SS3-004.
+```
+
+```text
+Agent: Grace (QA)
+Scope: RLS3-003 QA readability and usability review for the internal sharing/provenance checklist.
+Changed: Added QA review evidence to the RLS3-003 provenance document and Sprint 03 card.
+Validated: Reviewed the provenance record, checksum instructions, naming rules, recipient boundaries, unsigned-installer warning, sharing blockers, and pre-share checklist; did not install, execute, upload, move, or share MSI/EXE artifacts.
+Risks: SS3-004 clean-machine installation remains blocked; external sharing still requires passing SS3-004 and explicit user approval for the named sharing scope.
+Next: Main thread can update GitHub issue #17; Grace can reuse this checklist when a clean VM/Sandbox is available for SS3-004.
 ```
 
 ### SS3-007: QA Review and Distribution Regression Coverage
