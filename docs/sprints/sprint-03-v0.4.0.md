@@ -1,6 +1,6 @@
 # Sprint 03: v0.4.0 Connected Desktop Distribution
 
-Status: Released - `v0.4.0` tagged; SS3-004 clean-machine validation remains blocked
+Status: Closed - `v0.4.0` tagged; SS3-004 deferred pending clean VM/Sandbox
 
 ## Sprint Summary
 
@@ -444,7 +444,7 @@ Next: RLS3-001 can inspect any produced artifacts or diagnostic bundles; SS3-004
 GitHub Issue: `#4`
 Agent Owner: Grace
 Supporting: Linus, Pixel, Ada
-Status: Blocked
+Status: Deferred
 Dependency: SS3-003
 
 Value:
@@ -489,22 +489,26 @@ Release Impact:
 
 QA Result:
 
-- SS3-004 is blocked because a valid clean-machine install requires Windows Sandbox or a clean VM, and no usable clean environment is available in this workspace.
+- SS3-004 is deferred because a valid clean-machine install requires Windows Sandbox or a clean VM, and no usable clean environment is available in this workspace.
 - Host installation was not performed.
+- The current session is not elevated/admin.
 - `C:\WINDOWS\System32\WindowsSandbox.exe` was not found.
 - Querying the `Containers-DisposableClientVM` optional feature from the current session reported that elevation is required.
+- Querying the `Microsoft-Hyper-V-All` optional feature from the current session reported that elevation is required.
+- Hyper-V Manager was not found.
+- Fresh `v0.4.0` internal diagnostic artifact hashes were captured from workflow run `27800606772` without executing installers.
 - The artifact source and repeatable MSI/NSIS validation checklist are documented in `docs/sprints/sprint-03-ss3-004-clean-machine-installation-qa.md`.
-- Grace recommends keeping installer artifacts internal-only and not moving this card to release review until the checklist is executed in a clean environment.
+- Grace recommends closing the Sprint 03 card as Deferred, keeping installer artifacts internal-only, and creating or reopening a clean-machine validation card when Windows Sandbox or a clean VM is available.
 
 Handoff:
 
 ```text
 Agent: Grace (QA)
 Scope: SS3-004 clean-machine installation validation.
-Changed: Added a QA blocker result, artifact-source reference, and repeatable clean-machine validation checklist for MSI and NSIS artifacts.
-Validated: Reviewed SS3-004 acceptance criteria, RLS3-001 artifact safety findings, WebView2 strategy, and local clean-environment availability; did not install MSI or EXE on the host machine.
+Changed: Added a QA deferral result, artifact-source reference, and repeatable clean-machine validation checklist for MSI and NSIS artifacts.
+Validated: Reviewed SS3-004 acceptance criteria, RLS3-001 artifact safety findings, WebView2 strategy, and local clean-environment availability; refreshed v0.4.0 artifact hashes from workflow run 27800606772; did not install MSI or EXE on the host machine.
 Risks: No actual clean-machine install evidence exists yet; connected API success may need a staging API build or explicit clean-machine backend setup because current diagnostics target a local API URL.
-Next: Run the checklist in Windows Sandbox or a clean VM, capture exact install/launch/API observations, then update this card with pass/fail evidence.
+Next: Close this Sprint 03 card as Deferred and run the checklist in Windows Sandbox or a clean VM through a follow-up validation card.
 ```
 
 ### SS3-006: Plan Windows Code Signing
@@ -960,14 +964,14 @@ Release Review:
 - Validation gates passed for audit, desktop tests, desktop build, backend/worker tests, and Python compile.
 - Windows diagnostic workflow run `27737626166` passed earlier in Sprint 03 and produced internal diagnostic artifacts.
 - RLS3-001, RLS3-002, and RLS3-003 are complete.
-- SS3-004 remains blocked because clean-machine installation requires Windows Sandbox or a clean VM that is not available from this workspace.
+- SS3-004 was deferred because clean-machine installation requires Windows Sandbox or a clean VM that is not available from this workspace.
 - External installer sharing remains blocked.
 - User approved proceeding with SS3-008 on 2026-06-19.
 - Version metadata was bumped to `0.4.0`.
 - Release gates passed after the version metadata bump.
 - The `v0.4.0` tag was created and pushed from release metadata commit `7b5656df6494a90511086405648962caa349e9f0`.
 - Post-release Windows diagnostic workflow run `27800606772` passed and uploaded fresh internal diagnostic artifacts.
-- Fresh artifacts from run `27800606772` remain unapproved for external sharing until RLS evidence is refreshed and SS3-004 passes.
+- Fresh artifacts from run `27800606772` remain unapproved for external sharing until RLS evidence is refreshed and clean-machine validation passes in a future card.
 
 Handoff:
 
@@ -976,8 +980,8 @@ Agent: Linus (Release Coordinator)
 Scope: SS3-008 v0.4.0 release preparation.
 Changed: Prepared v0.4.0 release notes, recorded release readiness, known limitations, installer sharing status, and rollback suggestion criteria.
 Validated: Reused SS3-007 validation results, Windows diagnostic workflow run 27737626166, and RLS3-001 through RLS3-003 release-safety evidence; reran release gates after the metadata bump.
-Risks: SS3-004 clean-machine installation is blocked; installer artifacts are unsigned/internal-only; external sharing remains blocked.
-Next: Keep SS3-004 blocked until Windows Sandbox or a clean VM is available, and refresh RLS artifact evidence before any installer sharing decision.
+Risks: SS3-004 clean-machine installation is deferred; installer artifacts are unsigned/internal-only; external sharing remains blocked.
+Next: Provide Windows Sandbox or a clean VM, then run a follow-up clean-machine validation card and refresh RLS artifact evidence before any installer sharing decision.
 ```
 
 ## Recommended Sequencing
@@ -1020,5 +1024,6 @@ Next: Keep SS3-004 blocked until Windows Sandbox or a clean VM is available, and
 - Release notes are prepared.
 - RLS safety gates are complete or documented as blockers.
 - User approved the `v0.4.0` release checkpoint on 2026-06-19.
+- SS3-004 is explicitly deferred with a preserved clean-machine checklist and current artifact hashes.
 - Distribution limitations are clear and visible.
 - Installer artifacts are not shared externally unless explicitly approved.

@@ -1,6 +1,6 @@
 # SS3-004 Clean-Machine Installation QA
 
-Status: Blocked - clean Windows Sandbox or clean VM not available in this workspace
+Status: Deferred - clean Windows Sandbox or clean VM not available in this workspace
 GitHub Issue: `#4`
 Owner: Grace - QA
 Supporting: Linus, Pixel, Ada
@@ -8,26 +8,29 @@ Review Date: 2026-06-19
 
 ## QA Decision
 
-SS3-004 is not ready for release review or Done.
+SS3-004 is deferred out of Sprint 03.
 
-The Sprint 03 installer artifacts are available for internal validation, and RLS3-001 found no evidence of leaked secrets, private local files, raw uploaded audio, or development cache files in the reviewed artifacts. However, a valid clean-machine installation test requires Windows Sandbox or a clean VM. This workspace does not currently provide a usable clean environment, and the MSI/EXE must not be installed on the host machine.
+The Sprint 03 release checkpoint is complete, but a valid clean-machine installation test still requires Windows Sandbox or a clean VM. This workspace does not currently provide a usable clean environment, and the MSI/EXE must not be installed on the host machine.
 
-Grace marks this card blocked until a clean Windows Sandbox or clean VM is available.
+Grace keeps the validation requirements intact and marks this card deferred until a clean Windows Sandbox or clean VM is available. The card should not be interpreted as a passed installer validation.
 
 ## Artifact Source To Use
 
-Use the artifacts already reviewed by RLS3-001:
+Use the fresh `v0.4.0` internal diagnostic artifacts from the post-release Windows workflow when the clean-machine environment becomes available. These artifacts have not been approved for external sharing; RLS artifact safety/provenance evidence must be refreshed before any sharing decision.
 
 | Field | Value |
 | --- | --- |
-| Workflow run | `27737626166` |
-| Run URL | `https://github.com/Leoserjes/SoundSplit/actions/runs/27737626166` |
-| Reviewed commit | `12475db1bf9b07bf832e55c21d8cd4110de6d33d` |
+| Workflow run | `27800606772` |
+| Run URL | `https://github.com/Leoserjes/SoundSplit/actions/runs/27800606772` |
+| Reviewed commit | `7b5656df6494a90511086405648962caa349e9f0` |
 | Installer artifact | `harmonIA-windows-internal-installers` |
-| MSI | `msi/harmonIA_0.3.0_x64_en-US.msi` |
-| MSI SHA-256 | `3f8d31dc6d02807623d2a6aae8a9c51becc6e14ec41049a8e110e4b30e77ca2d` |
-| NSIS | `nsis/harmonIA_0.3.0_x64-setup.exe` |
-| NSIS SHA-256 | `f9f05f8bc27de25ee3de79352453688ffedb3bcab3326fea62e1c78a0fa39d2e` |
+| Installer artifact ID | `7740186092` |
+| Installer artifact digest | `sha256:1da69737665417b1b313a2d6122cd70ef2ac2a4ebfa9a0d7da20e7dd79735fec` |
+| Artifact expiration | 2026-06-26 |
+| MSI | `msi/harmonIA_0.4.0_x64_en-US.msi` |
+| MSI SHA-256 | `d81ba8fd2db6e139a9a66d4e6aeb9bf58e6e3e9b2faf57cd093a314b352b1780` |
+| NSIS | `nsis/harmonIA_0.4.0_x64-setup.exe` |
+| NSIS SHA-256 | `c2b7099c9ae05973c4942c1426735fc119f3579199fa98990b50d9a155a5adf8` |
 
 Do not use locally rebuilt installers for this card unless the source run, commit, artifact name, and checksums are recorded again.
 
@@ -38,15 +41,19 @@ The host machine was checked only for clean-environment availability:
 | Check | Result |
 | --- | --- |
 | Host MSI/EXE installation | Not performed |
+| Current session elevated/admin | No |
 | `C:\WINDOWS\System32\WindowsSandbox.exe` | Not found |
 | `Containers-DisposableClientVM` optional feature query | Unavailable from current non-elevated session; Windows reported that elevation is required |
+| `Microsoft-Hyper-V-All` optional feature query | Unavailable from current non-elevated session; Windows reported that elevation is required |
+| Hyper-V Manager path | Not found |
 | Clean VM available to this workspace | Not found |
 
 Because no clean Windows Sandbox or clean VM is available, no install, launch, API, permission, or uninstall result can be claimed for SS3-004 yet.
 
 ## QA Recommendation
 
-- Keep SS3-004 in Blocked until Grace can run the installer in Windows Sandbox or a clean VM.
+- Close SS3-004 as Deferred for Sprint 03 so the released sprint is not left with a permanently open environment blocker.
+- Reopen this validation or create a follow-up clean-machine card when Windows Sandbox or a clean VM is available.
 - Do not recommend the current installer artifacts for non-developer testers until this checklist passes.
 - Test both MSI and NSIS artifacts separately; a pass for one installer format does not automatically pass the other.
 - Record unsigned-installer, SmartScreen, UAC, and WebView2 prompts exactly as observed.
@@ -76,7 +83,7 @@ Run this checklist only inside Windows Sandbox or a clean VM snapshot. Do not ru
 
 ### 2. MSI Install Check
 
-- [ ] Install `msi/harmonIA_0.3.0_x64_en-US.msi`.
+- [ ] Install `msi/harmonIA_0.4.0_x64_en-US.msi`.
 - [ ] Record any unsigned publisher, SmartScreen, UAC, or WebView2 prompt.
 - [ ] Confirm installation completes without requiring Node, npm, Python, Rust, or source checkout files.
 - [ ] Launch harmonIA from the installed app entry point.
@@ -90,7 +97,7 @@ Run this checklist only inside Windows Sandbox or a clean VM snapshot. Do not ru
 ### 3. NSIS Install Check
 
 - [ ] Restore a clean snapshot or start a fresh Windows Sandbox session.
-- [ ] Install `nsis/harmonIA_0.3.0_x64-setup.exe`.
+- [ ] Install `nsis/harmonIA_0.4.0_x64-setup.exe`.
 - [ ] Record any unsigned publisher, SmartScreen, UAC, or WebView2 prompt.
 - [ ] Confirm installation completes without requiring Node, npm, Python, Rust, or source checkout files.
 - [ ] Launch harmonIA from the installed app entry point.
@@ -124,7 +131,7 @@ Use this table when the clean-machine run is available:
 
 ## Pass Criteria
 
-SS3-004 can move forward only when:
+Future clean-machine validation can move forward only when:
 
 - A Windows Sandbox or clean VM run is completed.
 - Installer source, workflow run, commit, artifact name, and checksums are recorded.
@@ -139,8 +146,8 @@ SS3-004 can move forward only when:
 ```text
 Agent: Grace (QA)
 Scope: SS3-004 clean-machine installation validation.
-Changed: Added the SS3-004 QA recommendation, blocker rationale, artifact source, clean-environment precheck, repeatable MSI/NSIS checklist, evidence template, and pass criteria.
-Validated: Reviewed the Sprint 03 SS3-004 card, RLS3-001 artifact safety report, WebView2 strategy, and Grace QA instructions; checked that Windows Sandbox is not available from this workspace; did not install MSI or EXE on the host machine.
-Risks: No actual clean-machine install has been performed; current installer artifacts are still not approved for non-developer testers; connected API success may require a future staging API build or explicit clean-machine backend setup.
-Next: Provide a Windows Sandbox or clean VM, rerun this checklist against the recorded artifacts, then update SS3-004 with observed pass/fail evidence.
+Changed: Deferred SS3-004 from Sprint 03 with a preserved clean-machine checklist, refreshed v0.4.0 artifact source, current environment precheck, and explicit sharing limits.
+Validated: Checked current clean-environment availability; confirmed this session is not elevated, Windows Sandbox is not installed, optional feature queries require elevation, Hyper-V Manager is not present, and no clean VM is available; downloaded the fresh v0.4.0 internal installer artifact only to compute MSI/NSIS SHA-256 hashes; did not install MSI or EXE on the host machine.
+Risks: No actual clean-machine install has been performed; current installer artifacts are still not approved for non-developer testers or external sharing; connected API success may require a future staging API build or explicit clean-machine backend setup.
+Next: Provide a Windows Sandbox or clean VM, rerun this checklist against the recorded artifacts, then create or reopen a clean-machine validation card with observed pass/fail evidence.
 ```
