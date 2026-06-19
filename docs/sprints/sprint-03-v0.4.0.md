@@ -1,6 +1,6 @@
 # Sprint 03: v0.4.0 Connected Desktop Distribution
 
-Status: Open
+Status: Released - `v0.4.0` tagged; SS3-004 clean-machine validation remains blocked
 
 ## Sprint Summary
 
@@ -965,7 +965,9 @@ Release Review:
 - User approved proceeding with SS3-008 on 2026-06-19.
 - Version metadata was bumped to `0.4.0`.
 - Release gates passed after the version metadata bump.
-- The `v0.4.0` tag is approved for creation from the release metadata commit.
+- The `v0.4.0` tag was created and pushed from release metadata commit `7b5656df6494a90511086405648962caa349e9f0`.
+- Post-release Windows diagnostic workflow run `27800606772` passed and uploaded fresh internal diagnostic artifacts.
+- Fresh artifacts from run `27800606772` remain unapproved for external sharing until RLS evidence is refreshed and SS3-004 passes.
 
 Handoff:
 
@@ -975,7 +977,7 @@ Scope: SS3-008 v0.4.0 release preparation.
 Changed: Prepared v0.4.0 release notes, recorded release readiness, known limitations, installer sharing status, and rollback suggestion criteria.
 Validated: Reused SS3-007 validation results, Windows diagnostic workflow run 27737626166, and RLS3-001 through RLS3-003 release-safety evidence; reran release gates after the metadata bump.
 Risks: SS3-004 clean-machine installation is blocked; installer artifacts are unsigned/internal-only; external sharing remains blocked.
-Next: Push the v0.4.0 tag and run post-release validation.
+Next: Keep SS3-004 blocked until Windows Sandbox or a clean VM is available, and refresh RLS artifact evidence before any installer sharing decision.
 ```
 
 ## Recommended Sequencing
