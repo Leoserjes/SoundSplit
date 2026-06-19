@@ -512,7 +512,7 @@ Next: Run the checklist in Windows Sandbox or a clean VM, capture exact install/
 GitHub Issue: `#6`
 Agent Owner: Linus
 Supporting: Ada, Maestro
-Status: Ready
+Status: Done
 Dependency: Sprint 03 approval
 
 Value:
@@ -542,11 +542,37 @@ Acceptance Criteria:
 
 Validation:
 
-- Documentation review by Linus, Ada, and Maestro.
+- Linus reviewed the plan against Microsoft, Azure Artifact Signing, Tauri, SignTool, and CA/B Forum documentation.
+- The plan keeps Ada, Maestro, and user approval as required gates before any purchase, account setup, CI signing work, or secret changes.
+- No signing implementation, paid service, certificate purchase, CI secret change, or workflow secret change was made.
 
 Release Impact:
 
-- Planning artifact only for `v0.4.0`; implementation can be deferred.
+- Planning artifact only for `v0.4.0`; code signing remains deferred.
+- Windows installer artifacts for `v0.4.0` remain unsigned internal diagnostics and must not be redistributed externally until signing, provenance, safety, and explicit approval gates are complete.
+
+Planning Result:
+
+- Created `docs/distribution/windows-code-signing-plan.md`.
+- Recommended Sprint 03 decision: defer code signing for `v0.4.0`, do not purchase certificates or services now, do not add secrets now, and prefer Azure Artifact Signing as the first future candidate if eligibility and cost are approved.
+- Kept Microsoft Store signing, traditional OV certificates, and EV certificates documented as alternatives.
+
+Release Notes Language:
+
+```text
+Windows installer artifacts for v0.4.0 are unsigned internal diagnostics. Code signing is intentionally deferred while the team validates installer safety, clean-machine installation, WebView2 behavior, and release provenance. Windows SmartScreen or enterprise policy may warn or block unsigned artifacts. Do not redistribute these artifacts externally until a signing decision, release safety review, provenance record, and explicit approval are complete.
+```
+
+Handoff:
+
+```text
+Agent: Linus (Release Coordinator)
+Scope: SS3-006 Windows code-signing planning for Sprint 03.
+Changed: Added the Windows code-signing plan, option comparison, approval gates, no-secret policy, CI impact notes, and v0.4.0 release-note language.
+Validated: Reviewed Microsoft, Tauri, Azure Artifact Signing, SignTool, and CA/B Forum documentation; confirmed no signing implementation, purchases, CI secret changes, or workflow secret changes were added.
+Risks: Azure Artifact Signing eligibility, final pricing, identity validation lead time, SmartScreen reputation behavior, and traditional certificate private-key logistics still need approval-time verification.
+Next: Keep v0.4.0 artifacts unsigned and internal-only; revisit signing when external distribution becomes a PM-approved release goal and EM/user approval exists for paid services and CI secret handling.
+```
 
 ### RLS3-001: Release Artifact Safety Review
 
