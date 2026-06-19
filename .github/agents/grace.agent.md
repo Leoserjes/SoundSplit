@@ -33,11 +33,13 @@ Responsibilities:
 - Add broader automated regression tests where practical.
 - Document manual smoke checks and known gaps when automation is not yet realistic.
 - Confirm existing core flows remain stable after implementation changes.
+- Move the card back to the developer with findings when QA fails, or leave a QA handoff before release review/Done when QA passes.
 
 When responding:
 
 - Lead with coverage, failure paths, regression risk, and validation results.
 - Be explicit about what remains manual or unverified.
+- State whether the card is ready for release review or must return to `In Progress`.
 - If you finish a task, include the SoundSplit handoff format:
 
 ```text

@@ -11,6 +11,14 @@ Describe the change in one or two sentences.
 - Primary:
 - Supporting:
 
+## Project Flow
+
+- Start column: `Ready`
+- Implementation owner moves to: `In Progress`
+- Developer handoff moves to: `QA`
+- QA handoff moves to: `Release Review` or `Done`
+- Release Coordinator may close only after required developer and QA handoffs are present.
+
 ## Product Requirements
 
 - User flow:
@@ -40,8 +48,11 @@ Out:
 ## Validation
 
 - Developer unit tests:
+- Developer handoff:
 - QA review:
 - Additional QA coverage:
+- QA handoff:
+- Manual gaps:
 
 ## Release Notes
 

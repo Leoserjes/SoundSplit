@@ -33,6 +33,8 @@ For feature work, start with Atlas to coordinate ownership, then hand off throug
 Atlas -> Maestro -> Ada -> Turing/Pixel -> Grace -> Linus -> Atlas
 ```
 
+Implementation cards should use separate agent sessions for the implementing developer and Grace QA. The developer session moves the card to `QA` with a handoff; Grace either returns it to `In Progress` with findings or moves it forward with a QA handoff. Linus should only run release review after that QA evidence exists.
+
 Each custom agent includes handoff buttons for common next steps.
 
 ## Validation Tasks

@@ -164,7 +164,8 @@ Typical tasks:
 
 - Confirm release scope with the PM.
 - Confirm technical readiness with the EM.
-- Run the QA test suite for the release candidate.
+- Confirm required developer and QA handoffs exist for included cards.
+- Run release readiness checks after QA has completed the release-candidate test suite.
 - Prepare release notes.
 - Run post-release validation.
 - If post-release tests fail, create a failure document and suggest rollback.

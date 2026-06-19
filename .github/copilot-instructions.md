@@ -19,6 +19,8 @@ Engineering expectations:
 - Architecture and technical constraints come from Ada.
 - Backend and frontend implementation agents add or update unit tests for changed code.
 - QA reviews developer tests and adds broader regression coverage where practical.
+- Implementation and QA must be separate agent passes: developers move cards from `In Progress` to `QA`, Grace leaves a QA handoff, and Linus handles release review only after QA evidence exists.
+- Release validation must not substitute for missing developer tests or QA review.
 - Release rollback is never autonomous; Linus documents failures and suggests rollback for user/EM approval.
 
 Default validation commands:
