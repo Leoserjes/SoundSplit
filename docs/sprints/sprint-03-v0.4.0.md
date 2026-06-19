@@ -904,7 +904,7 @@ Next: Linus can prepare SS3-008 release notes and request user approval before c
 GitHub Issue: `#19`
 Agent Owner: Linus
 Supporting: Atlas, Grace, Ada, Maestro
-Status: Ready
+Status: Release Review
 Dependency: SS3-001 through SS3-007 and RLS3-001 through RLS3-003
 
 Value:
@@ -952,6 +952,28 @@ Validation:
 Release Impact:
 
 - Creates the `v0.4.0` release checkpoint.
+
+Release Review:
+
+- Release notes prepared in `docs/releases/v0.4.0.md`.
+- QA report completed in `docs/sprints/sprint-03-qa-report.md`.
+- Validation gates passed for audit, desktop tests, desktop build, backend/worker tests, and Python compile.
+- Windows diagnostic workflow run `27737626166` passed earlier in Sprint 03 and produced internal diagnostic artifacts.
+- RLS3-001, RLS3-002, and RLS3-003 are complete.
+- SS3-004 remains blocked because clean-machine installation requires Windows Sandbox or a clean VM that is not available from this workspace.
+- External installer sharing remains blocked.
+- Version metadata and the `v0.4.0` tag are pending explicit user approval.
+
+Handoff:
+
+```text
+Agent: Linus (Release Coordinator)
+Scope: SS3-008 v0.4.0 release preparation.
+Changed: Prepared v0.4.0 release notes, recorded release readiness, known limitations, installer sharing status, and rollback suggestion criteria.
+Validated: Reused SS3-007 validation results, Windows diagnostic workflow run 27737626166, and RLS3-001 through RLS3-003 release-safety evidence.
+Risks: SS3-004 clean-machine installation is blocked; installer artifacts are unsigned/internal-only; version metadata and the v0.4.0 tag still require user approval.
+Next: Ask the user for approval before bumping version metadata, creating the v0.4.0 tag, or publishing anything.
+```
 
 ## Recommended Sequencing
 
