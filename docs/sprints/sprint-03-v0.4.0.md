@@ -650,10 +650,10 @@ Next: Ada can proceed with RLS3-002, and Linus can reuse the recorded checksums 
 
 ### RLS3-002: Installer Permissions And Data Boundary Review
 
-GitHub Issue: TBD after approval
+GitHub Issue: `#16`
 Agent Owner: Ada
 Supporting: Pixel, Grace, Linus
-Status: Ready
+Status: Done
 Dependency: SS3-001, SS3-004 as applicable
 
 Value:
@@ -692,6 +692,27 @@ Validation:
 Release Impact:
 
 - Required before describing the installer as safe for non-developer testers.
+
+Review Result:
+
+- Added `docs/distribution/installer-permissions-data-boundary-review.md`.
+- Passed for Sprint 03 internal distribution review.
+- Current Tauri shell does not declare native plugins, custom commands, or app-specific capability grants.
+- Current desktop code uses browser file input and drag/drop `File` objects; selected files are held in React memory and submitted only when the user starts analysis.
+- No arbitrary directory reads, native filesystem API usage, browser persistence API usage, or local audio copy behavior were found in the reviewed desktop app code.
+- Network behavior is documented as browser `fetch` to the configured API base URL, defaulting to `http://127.0.0.1:8000`.
+- Follow-up risks are documented for production CSP/API target allow-listing, future Tauri plugin capabilities, backend uploaded-audio retention, and clean-machine validation.
+
+Handoff:
+
+```text
+Agent: Ada (Engineering Manager)
+Scope: RLS3-002 installer permissions and desktop data boundary review.
+Changed: Added the installer permissions and data boundary review document; documented current Tauri permission surface, file-selection flow, local storage behavior, and API target behavior.
+Validated: Reviewed desktop source/tests, Tauri config/Rust shell, release artifact safety review, Windows diagnostic workflow, WebView2 strategy, and Tauri permission/capability docs; searched for privileged Tauri APIs and browser persistence APIs; did not install MSI or EXE on the host.
+Risks: Production CSP/API target allow-list is not defined; future Tauri plugins need scoped capabilities; backend uploaded-audio retention is outside this review; clean-machine install remains blocked until SS3-004 can run in a clean VM or Windows Sandbox.
+Next: Main thread can review and update GitHub issue #16; Linus can proceed with RLS3-003 using this review as a sharing gate input.
+```
 
 ### RLS3-003: Internal Sharing, Provenance, And Integrity Checklist
 
