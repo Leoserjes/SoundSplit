@@ -131,6 +131,23 @@ describe("App", () => {
     expect(screen.queryByText("empty.wav")).not.toBeInTheDocument();
   });
 
+  it("shows a validation error for oversized audio files", async () => {
+    const oversizedFile = new File(["audio-bytes"], "large.wav", { type: "audio/wav" });
+    Object.defineProperty(oversizedFile, "size", {
+      value: 100 * 1024 * 1024 + 1
+    });
+    render(<App />);
+
+    fireEvent.change(screen.getByLabelText("Choose audio file"), {
+      target: { files: [oversizedFile] }
+    });
+
+    expect(await screen.findByRole("alert")).toHaveTextContent(
+      "Choose an audio file up to 100 MB."
+    );
+    expect(screen.queryByText("large.wav")).not.toBeInTheDocument();
+  });
+
   it("shows a friendly error when upload fails", async () => {
     const audioFile = new File(["audio-bytes"], "song.wav", { type: "audio/wav" });
     mockedUploadAudioJob.mockRejectedValue(
