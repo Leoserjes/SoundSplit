@@ -32,12 +32,14 @@ Engineering success:
 - Persistence and file storage configuration are explicit and documented.
 - Upload handling keeps the Sprint 02 validation rules while adding durable storage behavior.
 - The architecture can evolve toward S3-compatible object storage without requiring hosted cloud services now.
+- The implemented API surface is discoverable through an accurate OpenAPI schema and Swagger UI.
 
 Quality success:
 
 - Backend tests cover durable job creation, upload persistence, artifact listing, and missing-artifact behavior.
 - Desktop tests cover status refresh and artifact action states.
 - Data retention and local file safety are reviewed before release.
+- Automated checks confirm the OpenAPI schema includes the expected routes and methods.
 
 Release success:
 
@@ -55,6 +57,7 @@ In:
 - Repository/service boundaries for jobs and artifacts.
 - Local development storage boundary for retained uploads and generated/mock artifacts.
 - Artifact listing and download behavior.
+- API endpoint inventory, OpenAPI metadata, and Swagger UI documentation.
 - Desktop job refresh/polling and artifact availability states.
 - QA report and release notes for `v0.5.0`.
 
@@ -125,6 +128,53 @@ Validation:
 
 - Documentation review by Ada and Maestro.
 - Atlas confirms implementation cards are actionable.
+
+### SS4-009: Document API Surface With OpenAPI And Swagger
+
+GitHub Issue: TBD after Sprint 04 approval
+Agent Owner: Turing
+Supporting: Ada, Pixel, Grace, Atlas
+Status: Draft
+Dependency: SS4-001; maintained as SS4-002 through SS4-005 add or change endpoints
+
+Value:
+
+Developers, frontend agents, QA, and future integrators need one reliable map of the implemented API rather than reconstructing routes from backend source files.
+
+In Scope:
+
+- Use FastAPI's generated OpenAPI schema as the API documentation source of truth.
+- Keep interactive Swagger UI available at `/docs` and the machine-readable schema at `/openapi.json` for approved development/internal environments.
+- Add API title, version, description, route tags, operation summaries, and response metadata.
+- Document every implemented endpoint with method, path, purpose, request shape, response shape, status codes, and expected error cases.
+- Group endpoints by domain, including health, jobs, uploads, and artifacts.
+- Link shared schemas under `packages/contracts` where they define an API boundary.
+- Document the current authentication state and clearly distinguish implemented endpoints from planned endpoints.
+- Add a repository documentation page that links to Swagger UI and records how to export or inspect the OpenAPI schema.
+
+Out of Scope:
+
+- Publishing Swagger UI as a public production endpoint.
+- Authentication implementation.
+- Generating client SDKs.
+- Documenting planned endpoints as if they already exist.
+
+Acceptance Criteria:
+
+- Swagger UI loads successfully at `/docs` in the approved development environment.
+- `/openapi.json` returns valid OpenAPI JSON.
+- Every implemented API route has a clear tag, summary, response model where applicable, and documented error responses.
+- The endpoint inventory covers all currently registered harmonIA routes and is updated for Sprint 04 route changes.
+- A backend test asserts that expected paths and methods are present in the generated OpenAPI schema.
+- README or developer documentation links to the API reference.
+- Grace confirms the documentation is sufficient to execute the Sprint 04 golden API flow without reading route source code.
+
+Validation:
+
+- FastAPI TestClient check for `GET /openapi.json`.
+- Schema assertion for expected paths and HTTP methods.
+- Manual Swagger UI smoke at `/docs`.
+- Documentation review by Ada, Pixel, and Grace.
 
 ### SS4-002: Add Persistent Job Repository Baseline
 
@@ -401,12 +451,13 @@ Validation:
 ## Recommended Sequencing
 
 1. SS4-001 confirms architecture and scope.
-2. SS4-002 builds the persistent job repository baseline.
-3. SS4-003 persists validated uploads through the storage service.
-4. SS4-004 adds artifact metadata and download behavior.
-5. SS4-005 updates the desktop refresh and artifact actions.
-6. SS4-006 performs data retention and file safety review.
-7. SS4-007 and SS4-008 close the sprint.
+2. SS4-009 establishes the API/OpenAPI inventory and stays current as Sprint 04 routes change.
+3. SS4-002 builds the persistent job repository baseline.
+4. SS4-003 persists validated uploads through the storage service.
+5. SS4-004 adds artifact metadata and download behavior.
+6. SS4-005 updates the desktop refresh and artifact actions.
+7. SS4-006 performs data retention and file safety review.
+8. SS4-007 and SS4-008 close the sprint.
 
 ## Sprint Risks
 
@@ -428,6 +479,7 @@ Validation:
 
 - Approved cards are Done or explicitly Deferred.
 - Durable job and artifact behavior is implemented or blockers are documented.
+- API endpoints are mapped in the generated OpenAPI schema and reviewed through Swagger UI.
 - QA report is complete.
 - Release notes are prepared.
 - User approves any release tag.
