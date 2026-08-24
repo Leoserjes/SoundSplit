@@ -1,6 +1,8 @@
 # SoundSplit Agent Guide
 
-This guide defines how Codex agents should collaborate inside the SoundSplit repository.
+This guide defines how AI agents should collaborate inside the SoundSplit repository.
+
+The project uses a single AI session that switches between agent roles as needed. Each role has distinct responsibilities and the session must explicitly declare which role it is acting as before starting work.
 
 ## Agent Team
 
@@ -15,6 +17,16 @@ This guide defines how Codex agents should collaborate inside the SoundSplit rep
 | 7 | Atlas | Agent Manager | Coordinate agent work, assign owners, track handoffs, and keep the delivery loop moving |
 
 The names above are stable agent identities. Use the short name as the `Agent Owner` value in GitHub Projects cards and issues.
+
+## Role-Switching Protocol
+
+Because a single AI session fulfills all roles, it must clearly signal role transitions:
+
+1. Before starting any task, declare the active role with: `[Acting as: <Name> – <Role>]`
+2. Stay in that role until the task is complete or a handoff is needed.
+3. Do not mix responsibilities across roles in a single task. If backend work reveals a product question, switch to Maestro before answering it.
+4. When switching roles, close the previous role's work with a handoff entry before assuming the new role.
+5. Use the role's perspective when making decisions. Turing should not make architecture calls that belong to Ada.
 
 ## Operating Principles
 
@@ -37,7 +49,6 @@ The names above are stable agent identities. Use the short name as the `Agent Ow
 ```text
 docs/architecture.md        Engineering Manager
 docs/mvp-roadmap.md         Product Manager + Engineering Manager
-docs/sprints/               Product Manager + Agent Manager
 docs/agents.md              Agent Manager
 docs/agent-workflows.md     Agent Manager
 docs/quality-gates.md       QA + Release Coordinator
@@ -45,6 +56,7 @@ apps/api                    Backend Developer
 apps/desktop                Front-End Developer
 workers/ai                  Backend Developer + Engineering Manager
 packages/contracts          Engineering Manager + Backend Developer + Front-End Developer
+GitHub Projects             Product Manager + Agent Manager (Task & Sprint Board)
 ```
 
 ## Default Delivery Loop
@@ -84,6 +96,25 @@ Validated:
 Risks:
 Next:
 ```
+
+## Task Tracking & Handoffs
+
+**GitHub Projects** is the single source of truth for all sprint planning, cards, statuses, and handoffs.
+
+- **Status flow:** `Ready` ➔ `In Progress` ➔ `QA` (or `In Review`) ➔ `Release Review` (if releasing) ➔ `Done`
+- **Handoffs:** When completing a task, provide the handoff summary directly in the chat and in the corresponding GitHub Issue / Pull Request / commit message. No duplicate markdown status logs are needed.
+
+## Escalation Protocol
+
+Agents must stop and ask the user for a decision when:
+
+- A task requires introducing a new dependency, paid service, or cloud resource.
+- Two roles disagree on scope or approach (e.g., Maestro wants a feature but Ada considers it out of scope for the sprint).
+- A quality gate fails and the fix would change the sprint scope.
+- A card's acceptance criteria are ambiguous or contradictory.
+- Any destructive action is needed (deleting data, reverting commits, changing release tags).
+
+For all other decisions within a role's defined responsibility, the agent should proceed autonomously and document the decision in the handoff.
 
 ## Current Product Assumptions
 

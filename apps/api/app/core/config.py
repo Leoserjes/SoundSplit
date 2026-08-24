@@ -5,6 +5,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     environment: str = Field(default="development", alias="SOUNDSPLIT_ENV")
     database_url: str = "postgresql+psycopg://soundsplit:soundsplit@localhost:5432/soundsplit"
+    sqlite_db_path: str = "data/soundsplit.db"
+    storage_root: str = "data"
     redis_url: str = "redis://localhost:6379/0"
     s3_endpoint_url: str = "http://localhost:9000"
     s3_bucket: str = "soundsplit-local"

@@ -32,7 +32,6 @@ docs/
   agent-workflows.md Agent delivery workflows
   quality-gates.md Validation levels
   task-template.md Task planning template
-  sprints/        Sprint plans and cards
   mvp-roadmap.md  MVP milestones
 ```
 

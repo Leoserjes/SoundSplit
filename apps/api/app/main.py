@@ -10,8 +10,18 @@ DEVELOPMENT_CORS_ORIGINS = [
 
 app = FastAPI(
     title="SoundSplit API",
-    version="0.3.0",
-    description="Backend orchestration API for harmonIA.",
+    version="0.5.0",
+    description="Backend orchestration API for harmonIA: audio separation, transcription, and notation.",
+    openapi_tags=[
+        {
+            "name": "health",
+            "description": "API health check and service readiness.",
+        },
+        {
+            "name": "jobs",
+            "description": "Audio analysis jobs and artifact processing lifecycle.",
+        },
+    ],
 )
 
 app.add_middleware(
@@ -22,7 +32,13 @@ app.add_middleware(
 )
 
 
-@app.get("/health")
+@app.get(
+    "/health",
+    tags=["health"],
+    summary="Health check",
+    description="Check the running health and availability of the SoundSplit API.",
+    response_model=dict[str, str],
+)
 def health() -> dict[str, str]:
     return {"status": "ok", "service": "soundsplit-api"}
 

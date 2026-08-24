@@ -49,11 +49,7 @@
 - Sprint 07 / `v0.8.0`: First MIDI transcription output.
 - Sprint 08 / `v0.9.0`: MusicXML and internal alpha readiness.
 
-Detailed planning:
-
-- `docs/sprints/sprint-04-v0.5.0.md`
-- `docs/sprints/sprint-05-v0.6.0.md`
-- `docs/sprints/sprint-roadmap-v0.7-v0.9.md`
+Detailed planning and active sprint cards are tracked in **GitHub Projects**.
 
 ## Later
 

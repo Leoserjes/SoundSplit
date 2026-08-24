@@ -122,3 +122,69 @@ Boundary decisions:
 - Storage, Redis queueing, audio decoding, normalization, and real AI processing remain deferred.
 - The desktop client submits the file only when the user starts analysis.
 - The shared upload request boundary is documented in `packages/contracts/upload.schema.json`.
+
+## Sprint 04 Durable Architecture & Storage Boundaries
+
+Sprint 04 establishes durable job persistence and local storage boundaries so jobs and uploaded files survive API process restarts without requiring cloud infrastructure yet.
+
+### 1. Job Repository Boundary (`JobRepository`)
+
+All job state transitions and metadata access are encapsulated behind an abstract repository interface:
+
+```python
+class JobRepository(ABC):
+    @abstractmethod
+    def create_job(self, job: AnalysisJob) -> AnalysisJob: ...
+    @abstractmethod
+    def get_job(self, job_id: str) -> Optional[AnalysisJob]: ...
+    @abstractmethod
+    def update_job(self, job_id: str, updates: dict) -> Optional[AnalysisJob]: ...
+    @abstractmethod
+    def list_jobs(self, limit: int = 50) -> list[AnalysisJob]: ...
+    @abstractmethod
+    def get_artifacts(self, job_id: str) -> list[ArtifactMetadata]: ...
+```
+
+- **Development Default:** `SQLiteJobRepository` persists to a local SQLite database at `data/soundsplit.db`.
+- **Testing Seam:** `InMemoryJobRepository` is injected in test fixtures to guarantee deterministic, isolated, fast unit tests.
+- **Production Path:** `PostgreSQLJobRepository` (via `DATABASE_URL` with SQLAlchemy/asyncpg).
+
+### 2. Storage Service Boundary (`StorageService`)
+
+All audio uploads and generated artifacts are stored via an abstract storage interface:
+
+```python
+class StorageService(ABC):
+    @abstractmethod
+    def save_upload(self, job_id: str, filename: str, content: bytes) -> str: ...
+    @abstractmethod
+    def get_upload_path(self, job_id: str) -> Optional[Path]: ...
+    @abstractmethod
+    def save_artifact(self, job_id: str, artifact_name: str, content: bytes) -> str: ...
+    @abstractmethod
+    def get_artifact_path(self, job_id: str, artifact_name: str) -> Optional[Path]: ...
+    @abstractmethod
+    def delete_job_files(self, job_id: str) -> bool: ...
+```
+
+- **Local Storage Root:** `data/` (configured via `STORAGE_ROOT` in `.env`, defaults to `./data`).
+  - Uploads: `data/uploads/{job_id}/{filename}`
+  - Artifacts: `data/artifacts/{job_id}/{artifact_name}`
+- **Security & Safety:**
+  - `data/` is strictly ignored by `.gitignore`.
+  - Raw uploads are rejected if they exceed 100 MB or have invalid extensions (`.wav`, `.mp3`, `.flac`).
+  - Path traversal protections ensure filenames cannot escape the job storage directory.
+- **Future Cloud Evolution:** `S3StorageService` will implement this exact interface with MinIO/AWS S3 without changing API route signatures.
+
+### 3. Artifact Metadata & Lifecycle
+
+Artifacts transition through explicit statuses:
+`pending` ➔ `processing` ➔ `ready` (or `failed`)
+
+- Artifact listing endpoint: `GET /v1/jobs/{job_id}/artifacts`
+- Artifact download endpoint: `GET /v1/jobs/{job_id}/artifacts/{artifact_id}/download` (or by name `GET /v1/jobs/{job_id}/artifacts/{name}`)
+- In Sprint 04, when an analysis job is marked complete, mocked/sample artifacts are materialized in storage to allow end-to-end testing of the download flow before the real PyTorch stem separation pipeline in Sprint 05/06.
+
+### 4. Quality & Contract Verification
+- All routes continue to strictly comply with `packages/contracts/job.schema.json` and `packages/contracts/upload.schema.json`.
+- FastAPI Swagger UI at `/docs` and OpenAPI schema at `/openapi.json` serve as the living documentation for all route contracts.

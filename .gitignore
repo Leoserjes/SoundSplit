@@ -28,10 +28,14 @@ venv/
 target/
 apps/desktop/src-tauri/gen/
 
-# App artifacts
+# App artifacts & storage
 storage/
 tmp/
 outputs/
+data/
+*.db
+*.sqlite
+*.sqlite3
 *.wav
 *.mp3
 *.flac

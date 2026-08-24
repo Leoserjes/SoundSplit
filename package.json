@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "node scripts/dev-start.mjs",
     "dev:check": "node --test scripts/dev-start.test.mjs",
+    "agents": ".venv\\Scripts\\python.exe scripts/run_agents.py",
     "desktop:dev": "npm --workspace apps/desktop run dev",
     "desktop:tauri": "npm --workspace apps/desktop run tauri",
     "desktop:build": "npm --workspace apps/desktop run build",
