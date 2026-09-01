@@ -40,3 +40,6 @@ data/
 *.mp3
 *.flac
 *.m4a
+
+# MCP
+mcp.json
