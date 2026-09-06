@@ -43,3 +43,4 @@ data/
 
 # MCP
 mcp.json
+.agents/mcp_config.json
