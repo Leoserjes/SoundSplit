@@ -15,6 +15,9 @@ ml = [
   "torch>=2.3.0",
   "torchaudio>=2.3.0"
 ]
+knowledge = [
+  "soundsplit-knowledge[embeddings]>=0.1.0"
+]
 
 [tool.ruff]
 line-length = 100

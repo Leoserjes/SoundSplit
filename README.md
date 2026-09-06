@@ -26,6 +26,7 @@ workers/
   ai/             AI processing workers and audio pipeline
 packages/
   contracts/      Shared schemas and API contracts
+  knowledge/      Notion ingestion and cited hybrid retrieval
 docs/
   architecture.md System architecture and flow
   agents.md       Agent responsibilities
@@ -59,6 +60,15 @@ Create and install Python dependencies:
 python -m venv .venv
 .venv\Scripts\python.exe -m pip install -e apps\api[test] -e workers\ai[test]
 ```
+
+Install the optional Knowledge Base retrieval stack when working on RAG:
+
+```bash
+.venv\Scripts\python.exe -m pip install -e packages\knowledge[postgres,embeddings,test] -e apps\api[test] -e workers\ai[test]
+```
+
+Setup, synchronization, query examples, and trust rules are documented in
+[SoundSplit Knowledge Retrieval](docs/knowledge-retrieval.md).
 
 Run the API and desktop web shell together:
 

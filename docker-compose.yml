@@ -1,6 +1,6 @@
 services:
   postgres:
-    image: postgres:16-alpine
+    image: pgvector/pgvector:0.8.6-pg16
     environment:
       POSTGRES_USER: soundsplit
       POSTGRES_PASSWORD: soundsplit
@@ -9,6 +9,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./packages/knowledge/soundsplit_knowledge/schema.sql:/docker-entrypoint-initdb.d/10-knowledge.sql:ro
 
   redis:
     image: redis:7-alpine

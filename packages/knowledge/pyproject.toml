@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "soundsplit-knowledge"
+version = "0.1.0"
+description = "Read-only Notion ingestion and cited hybrid retrieval for SoundSplit."
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+postgres = ["psycopg[binary]>=3.2,<4"]
+embeddings = ["sentence-transformers>=3.4,<6"]
+test = ["pytest>=8,<10"]
+
+[tool.setuptools.packages.find]
+include = ["soundsplit_knowledge*"]
+
+[tool.setuptools.package-data]
+soundsplit_knowledge = ["*.sql"]

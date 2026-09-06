@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.routes.jobs import router as jobs_router
+from app.api.routes.knowledge import router as knowledge_router
 
 DEVELOPMENT_CORS_ORIGINS = [
     "http://localhost:1420",
@@ -20,6 +21,10 @@ app = FastAPI(
         {
             "name": "jobs",
             "description": "Audio analysis jobs and artifact processing lifecycle.",
+        },
+        {
+            "name": "knowledge",
+            "description": "Cited retrieval from the indexed SoundSplit Notion source of truth.",
         },
     ],
 )
@@ -44,3 +49,4 @@ def health() -> dict[str, str]:
 
 
 app.include_router(jobs_router, prefix="/v1/jobs", tags=["jobs"])
+app.include_router(knowledge_router, prefix="/v1/knowledge", tags=["knowledge"])

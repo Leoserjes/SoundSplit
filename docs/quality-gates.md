@@ -39,7 +39,7 @@ After dependencies are installed, add:
 ```powershell
 npm run desktop:build
 npm run desktop:test
-.venv\Scripts\python.exe -m pytest --rootdir=. apps\api\tests workers\ai\tests
+.venv\Scripts\python.exe -m pytest --rootdir=. apps\api\tests workers\ai\tests packages\knowledge\tests
 ```
 
 For the API, add environment-specific commands once the Python package manager is chosen.

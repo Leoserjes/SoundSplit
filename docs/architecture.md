@@ -64,6 +64,14 @@ PostgreSQL stores metadata. Object storage stores large artifacts:
 
 Redis is used for queueing and short-lived job state.
 
+### Knowledge Retrieval
+
+The SoundSplit Notion Knowledge Base is the human-owned SSOT. A read-only synchronizer creates a
+rebuildable hybrid index in PostgreSQL using the `knowledge` schema. It preserves Notion page and
+block citations, IDs, status, confidence, tags, source edit time, and epistemic labels. The API
+exposes cited passages through `POST /v1/knowledge/search`; agent-side generation remains a consumer
+of this retrieval contract. See [Knowledge Retrieval](knowledge-retrieval.md).
+
 ## MVP Job Lifecycle
 
 ```text
