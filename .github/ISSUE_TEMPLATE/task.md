@@ -37,15 +37,15 @@ Follow the delivery and handoff rules in AGENTS.md. Track status in GitHub Proje
 
 In:
 
-- 
+-
 
 Out:
 
-- 
+-
 
 ## Expected Files
 
-- 
+-
 
 ## Validation
 
