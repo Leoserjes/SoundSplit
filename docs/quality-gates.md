@@ -1,78 +1,52 @@
-# Quality Gates
+# Manual Validation
 
-Quality gates keep harmonIA moving quickly without losing structure.
+Validation is run manually in this phase so each step can be inspected and understood. No new CI configuration is required. Shared ownership, QA handoffs, and release rules live in [AGENTS.md](../AGENTS.md).
 
-## Gate Levels
+Run commands individually from the repository root, after following the [setup](../README.md#getting-started). Inspect the result and exit code before continuing; record failures rather than reporting unchecked steps as passed.
 
-| Level | When to Use | Required Checks | Owner |
-| --- | --- | --- | --- |
-| L0 Docs | Documentation-only changes | Review links, headings, and terminology | Agent Manager |
-| L1 Structure | New files, schemas, or app shells | JSON parsing, Python compile checks where relevant | EM + QA |
-| L2 Feature | Working API/UI behavior | Developer unit tests, developer handoff, QA review in the `QA` column, smoke checks, contract alignment, manual path check | Developer + QA |
-| L3 Integration | API + desktop + worker flow | End-to-end job flow, storage/queue behavior, regression review, QA handoff before release review | QA + EM |
-| L4 Release | User-facing build or release candidate | Prior developer and QA handoffs, full build, test suite, release notes, rollback recommendation criteria | Release Coordinator |
-| L5 Post-Release | Published release validation | Post-release tests, incident note on failure, rollback suggestion when needed | Release Coordinator |
+| Change | Manual checks | Purpose |
+| --- | --- | --- |
+| Documentation | Review local links, commands, terminology, and current behavior | Prevent stale or misleading guidance |
+| Developer startup | `npm run dev:check` | Check launcher behavior |
+| Desktop | `npm run desktop:test`, then `npm run desktop:build` | Check behavior and TypeScript/build compatibility |
+| Python packages | Command below | Check API, worker, and knowledge regression coverage |
+| Contracts | Parse schemas and compare with API responses/OpenAPI | Detect contract drift; parsing alone does not prove compatibility |
+| Release candidate | All relevant checks plus native build and manual installation/flow checks | Verify the delivered application |
 
-## Gate Ownership Rule
-
-Implementation cards must have separate developer and QA evidence before they are marked `Done`.
-
-- Developers own implementation and unit tests, then move the card to `QA`.
-- QA owns independent review, regression coverage, and manual-gap documentation.
-- Release Coordinator owns release readiness after QA, and should not backfill missing developer or QA validation during release prep.
-- If QA finds issues, the card returns to `In Progress` with clear findings instead of moving forward.
-
-## Current Lightweight Commands
-
-Run these before dependencies are installed:
+## Python Regression Checks
 
 ```powershell
-Get-Content package.json | ConvertFrom-Json | Out-Null
-Get-Content apps\desktop\package.json | ConvertFrom-Json | Out-Null
-Get-Content apps\desktop\src-tauri\tauri.conf.json | ConvertFrom-Json | Out-Null
-Get-Content packages\contracts\job.schema.json | ConvertFrom-Json | Out-Null
-python -m compileall apps\api workers\ai
-```
-
-After dependencies are installed, add:
-
-```powershell
-npm run desktop:build
-npm run desktop:test
 .venv\Scripts\python.exe -m pytest --rootdir=. apps\api\tests workers\ai\tests packages\knowledge\tests
 ```
 
-For the API, add environment-specific commands once the Python package manager is chosen.
+Unit tests do not establish that a live Notion synchronization, PostgreSQL search, or embedding service works. When changing retrieval integration, also exercise the [retrieval setup and query flow](knowledge-retrieval.md), documenting the environment and any unavailable services.
 
-## QA Review Checklist
+## Contract Syntax
 
-- Does every requirement have acceptance criteria?
-- Did the developer add unit tests for changed code?
-- Did the developer leave a handoff before moving the card to `QA`?
-- Did QA review those unit tests?
-- Are happy paths covered?
-- Are failure paths covered for risky flows?
-- Are regression tests added for fixed bugs?
-- Are tests repeatable without hidden local state?
-- Are unautomated checks documented?
-- Did QA leave a handoff before the card moved to release review or Done?
+```powershell
+Get-Content packages\contracts\job.schema.json -Raw | ConvertFrom-Json | Out-Null
+Get-Content packages\contracts\upload.schema.json -Raw | ConvertFrom-Json | Out-Null
+```
 
-## EM Review Checklist
+## Manual Application Flow
 
-- Does the change match the desktop-first product direction?
-- Are contracts and implementation naming aligned?
-- Does the job lifecycle still make sense?
-- Are new dependencies justified?
-- Are architecture boundaries preserved?
+1. Run `npm run dev` and check `/health` and `/docs` on the API.
+2. Submit a small local WAV, MP3, or FLAC file. Confirm the returned job ID, `queued` status, and placeholder artifact metadata.
+3. Use `/docs` to retrieve the job, list artifacts, and download an artifact using its returned URI. Placeholder files do not demonstrate real audio processing.
+4. Restart the API from the same working directory and confirm the job and upload persist.
+5. Check unsupported extension and empty-upload errors. Review regression coverage for oversized uploads.
+6. Record UI gaps explicitly: automatic job polling and download buttons are not currently implemented.
 
-## Release Checklist
+Use disposable local inputs. Runtime files belong in ignored storage paths; do not commit generated uploads, databases, or artifacts.
 
-- Did the PM confirm release scope?
-- Did the EM confirm technical readiness?
-- Do included implementation cards have developer and QA handoffs?
-- Did QA run the required test suite before release prep?
-- Are release notes prepared?
-- Are rollback recommendation criteria documented?
-- Were post-release checks run?
-- If a post-release check failed, was an incident note created?
-- If the release is unsafe, did the Release Coordinator suggest rollback instead of executing it autonomously?
+## Release Evidence
+
+Run the native build when validating a desktop release:
+
+```powershell
+npm --workspace apps/desktop run tauri -- build
+```
+
+Follow the relevant [distribution procedures](distribution/). Record the application version, source commit, relevant component versions, environment, commands and results, manual checks, skipped checks, artifact hashes, and known limitations in the release Issue/PR or GitHub Release. Components may have different versions. A successful build does not replace installation testing.
+
+Record post-release failures in an Issue. Recommend rollback with impact and recovery risks; obtain user/EM approval before executing it.

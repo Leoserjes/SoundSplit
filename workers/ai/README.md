@@ -1,15 +1,5 @@
 # SoundSplit AI Worker
 
-Python worker for long-running harmonIA audio processing.
+The current `AudioPipeline` is a stub that returns artifact names. It does not consume queued jobs, process audio, persist output files, or update API job status. API placeholder files are currently created by `JobService`.
 
-Initial responsibilities:
-
-- Receive queued analysis jobs
-- Normalize audio
-- Run stem separation
-- Run transcription
-- Generate MIDI, MusicXML, and PDF score artifacts
-- Report progress and artifact metadata back to the API
-
-The first implementation can use mocked output, then add real models incrementally.
-
+Real normalization, separation, and transcription are future work tracked in GitHub Projects. See the [architecture](../../docs/architecture.md) and root [setup](../../README.md#getting-started). Local embedding service instructions are in [knowledge retrieval](../../docs/knowledge-retrieval.md).

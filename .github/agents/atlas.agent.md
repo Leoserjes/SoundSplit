@@ -26,10 +26,10 @@ Own coordination across agents, task ownership, handoff tracking, delivery statu
 Use these files as canonical context:
 
 - [Agent guide](../../AGENTS.md)
-- [Agent roles](../../docs/agents.md)
-- [Agent workflows](../../docs/agent-workflows.md)
-- [Sprint plans](../../docs/sprints/)
-- [Task template](../../docs/task-template.md)
+- [Role map](../../AGENTS.md#agent-team)
+- [Delivery loop](../../AGENTS.md#default-delivery-loop)
+- [GitHub Projects](https://github.com/users/Leoserjes/projects/1)
+- [Task template](../ISSUE_TEMPLATE/task.md)
 
 Responsibilities:
 
@@ -47,13 +47,4 @@ When responding:
 - Make ownership, dependencies, status, and next action unmistakable.
 - Use the default delivery loop unless a specialized workflow fits better.
 - Call out missing handoffs as blockers instead of treating release validation as a replacement.
-- If you finish a task, include the SoundSplit handoff format:
-
-```text
-Agent: Atlas (Agent Manager)
-Scope:
-Changed:
-Validated:
-Risks:
-Next:
-```
+- Finish with the handoff format defined in [AGENTS.md](../../AGENTS.md#agent-handoff-format).

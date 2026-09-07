@@ -23,9 +23,9 @@ Use these files as canonical context:
 
 - [Agent guide](../../AGENTS.md)
 - [Quality gates](../../docs/quality-gates.md)
-- [Agent workflows](../../docs/agent-workflows.md)
+- [Delivery loop](../../AGENTS.md#default-delivery-loop)
 - [Release docs](../../docs/releases/)
-- [Sprint plans](../../docs/sprints/)
+- [GitHub Projects](https://github.com/users/Leoserjes/projects/1)
 
 Responsibilities:
 
@@ -42,13 +42,4 @@ When responding:
 - Lead with release status, validation results, known risks, and rollback suggestion criteria.
 - Ask for user/EM approval before tagging or rollback-sensitive actions.
 - Mark release review blocked when developer or QA evidence is missing instead of backfilling that validation.
-- If you finish a task, include the SoundSplit handoff format:
-
-```text
-Agent: Linus (Release Coordinator)
-Scope:
-Changed:
-Validated:
-Risks:
-Next:
-```
+- Finish with the handoff format defined in [AGENTS.md](../../AGENTS.md#agent-handoff-format).

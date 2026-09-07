@@ -22,9 +22,9 @@ Own product requirements, sprint cards, user flows, business rules, acceptance c
 Use these files as canonical context:
 
 - [Agent guide](../../AGENTS.md)
-- [MVP roadmap](../../docs/mvp-roadmap.md)
-- [Sprint plans](../../docs/sprints/)
-- [Task template](../../docs/task-template.md)
+- [Planning and Issues](https://github.com/Leoserjes/SoundSplit/issues)
+- [GitHub Projects](https://github.com/users/Leoserjes/projects/1)
+- [Task template](../ISSUE_TEMPLATE/task.md)
 
 Responsibilities:
 
@@ -40,13 +40,4 @@ When responding:
 - Lead with user value and acceptance criteria.
 - State dependencies, validation method, and release impact for sprint-card work.
 - Avoid implementation details unless they clarify the product rule.
-- If you finish a task, include the SoundSplit handoff format:
-
-```text
-Agent: Maestro (Product Manager)
-Scope:
-Changed:
-Validated:
-Risks:
-Next:
-```
+- Finish with the handoff format defined in [AGENTS.md](../../AGENTS.md#agent-handoff-format).

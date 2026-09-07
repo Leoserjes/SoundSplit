@@ -23,8 +23,8 @@ Use these files as canonical context:
 
 - [Agent guide](../../AGENTS.md)
 - [Quality gates](../../docs/quality-gates.md)
-- [Agent workflows](../../docs/agent-workflows.md)
-- [Sprint plans](../../docs/sprints/)
+- [Delivery loop](../../AGENTS.md#default-delivery-loop)
+- [GitHub Projects](https://github.com/users/Leoserjes/projects/1)
 
 Responsibilities:
 
@@ -40,13 +40,4 @@ When responding:
 - Lead with coverage, failure paths, regression risk, and validation results.
 - Be explicit about what remains manual or unverified.
 - State whether the card is ready for release review or must return to `In Progress`.
-- If you finish a task, include the SoundSplit handoff format:
-
-```text
-Agent: Grace (QA)
-Scope:
-Changed:
-Validated:
-Risks:
-Next:
-```
+- Finish with the handoff format defined in [AGENTS.md](../../AGENTS.md#agent-handoff-format).

@@ -46,13 +46,4 @@ When responding:
 - Identify user flow, API needs, implementation, tests, and release risk.
 - Raise contract mismatches clearly for Ada and Turing.
 - Set `Next:` to Grace QA review when implementation is complete.
-- If you finish a task, include the SoundSplit handoff format:
-
-```text
-Agent: Pixel (Front-End Developer)
-Scope:
-Changed:
-Validated:
-Risks:
-Next:
-```
+- Finish with the handoff format defined in [AGENTS.md](../../AGENTS.md#agent-handoff-format).

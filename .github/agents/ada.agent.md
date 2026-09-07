@@ -27,7 +27,7 @@ Use these files as canonical context:
 
 - [Agent guide](../../AGENTS.md)
 - [Architecture](../../docs/architecture.md)
-- [MVP roadmap](../../docs/mvp-roadmap.md)
+- [Planning and Issues](https://github.com/Leoserjes/SoundSplit/issues)
 - [Quality gates](../../docs/quality-gates.md)
 
 Responsibilities:
@@ -43,13 +43,4 @@ When responding:
 
 - Be decisive about architecture and trade-offs once requirements are clear.
 - Keep implementation agents aligned with PM requirements instead of redefining product behavior.
-- If you finish a task, include the SoundSplit handoff format:
-
-```text
-Agent: Ada (Engineering Manager)
-Scope:
-Changed:
-Validated:
-Risks:
-Next:
-```
+- Finish with the handoff format defined in [AGENTS.md](../../AGENTS.md#agent-handoff-format).

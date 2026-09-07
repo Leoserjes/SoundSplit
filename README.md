@@ -2,69 +2,45 @@
 
 SoundSplit is a music engineering company building harmonIA, a desktop AI tool for music producers, musicians, teachers, and audio engineers.
 
-harmonIA receives an audio file, analyzes the track, separates stems, identifies musical parts, and exports playable/editable notation artifacts such as MIDI, MusicXML, and PDF scores.
-
-## Product Direction
-
-The first product version is a professional desktop app powered by cloud AI:
-
-- Desktop app: Tauri + React
-- Backend API: FastAPI
-- AI workers: Python + PyTorch
-- Async jobs: Redis-backed queue
-- Data: PostgreSQL
-- File storage: S3-compatible object storage
+harmonIA is a desktop music analysis application under development. The current implementation accepts local audio uploads, persists jobs in SQLite, stores files locally, and returns placeholder artifacts. Real separation, transcription, and PDF export are future capabilities.
 
 ## Repository Layout
 
-```text
-AGENTS.md        Agent operating guide
-apps/
-  desktop/        Tauri desktop application
-  api/            FastAPI backend
-workers/
-  ai/             AI processing workers and audio pipeline
-packages/
-  contracts/      Shared schemas and API contracts
-  knowledge/      Notion ingestion and cited hybrid retrieval
-docs/
-  architecture.md System architecture and flow
-  agents.md       Agent responsibilities
-  agent-workflows.md Agent delivery workflows
-  quality-gates.md Validation levels
-  task-template.md Task planning template
-  mvp-roadmap.md  MVP milestones
-```
+- `apps/desktop`: Tauri + React desktop shell.
+- `apps/api`: FastAPI jobs, upload, download, and knowledge search endpoints.
+- `workers/ai`: audio pipeline stub; not yet connected to a job queue.
+- `packages/contracts`: shared JSON schemas.
+- `packages/knowledge`: Notion ingestion and cited retrieval.
+- `docs`: versioned technical documentation and operating procedures.
+- `.github/ISSUE_TEMPLATE`: reusable task template.
 
-## MVP Flow
+## Documentation and Planning
 
-```text
-Audio upload
-  -> API creates analysis job
-  -> AI worker processes audio
-  -> stems, MIDI, MusicXML, and scores are generated
-  -> desktop app shows progress and downloads results
-```
+[GitHub Projects](https://github.com/users/Leoserjes/projects/1) and linked [Issues](https://github.com/Leoserjes/SoundSplit/issues) own backlog, priorities, sprint scope, status, acceptance criteria, and handoffs. Do not duplicate active planning in Markdown.
+
+Keep setup instructions, current [architecture](docs/architecture.md), [manual validation](docs/quality-gates.md), and reusable distribution procedures with the code. [AGENTS.md](AGENTS.md) owns shared agent rules; individual agent files add role-specific context. The Notion Knowledge Base owns curated knowledge consumed by retrieval; it is not a second sprint board.
+
+Components may have independent versions. The final application has its own release version, reflected in the Tauri application configuration. Release evidence should identify the application version, source commit, and relevant component versions. Do not bump unrelated components simply to make their versions match.
 
 ## Getting Started
 
 Install JavaScript dependencies:
 
 ```bash
-npm install
+npm ci
 ```
 
-Create and install Python dependencies:
+From the repository root, create the virtual environment and install all required local Python packages:
 
 ```bash
 python -m venv .venv
-.venv\Scripts\python.exe -m pip install -e apps\api[test] -e workers\ai[test]
+.venv\Scripts\python.exe -m pip install -e "packages/knowledge[postgres,test]" -e "apps/api[test]" -e "workers/ai[test]"
 ```
 
-Install the optional Knowledge Base retrieval stack when working on RAG:
+The API imports the local knowledge package, so it is included above. Audio development does not require running PostgreSQL or embeddings. Install the optional embedding dependencies only when working on retrieval:
 
 ```bash
-.venv\Scripts\python.exe -m pip install -e packages\knowledge[postgres,embeddings,test] -e apps\api[test] -e workers\ai[test]
+.venv\Scripts\python.exe -m pip install -e "packages/knowledge[postgres,embeddings,test]" -e "apps/api[test]" -e "workers/ai[test]"
 ```
 
 Setup, synchronization, query examples, and trust rules are documented in
@@ -81,8 +57,7 @@ This starts the API at `http://127.0.0.1:8000` and the desktop web shell at `htt
 Run the API separately:
 
 ```bash
-cd apps/api
-..\..\.venv\Scripts\python.exe -m uvicorn app.main:app --reload
+.venv\Scripts\python.exe -m uvicorn app.main:app --reload
 ```
 
 Run the desktop web shell separately:
@@ -104,14 +79,7 @@ VITE_API_BASE_URL=http://127.0.0.1:8000
 
 `VITE_API_ENVIRONMENT` accepts `development`, `staging`, or `production`. `VITE_API_BASE_URL` takes precedence when set and trailing slashes are removed before requests are sent. Staging and production URLs can remain placeholders until hosted API environments exist.
 
-Run validation:
-
-```bash
-npm run desktop:build
-npm run desktop:test
-npm run dev:check
-.venv\Scripts\python.exe -m pytest --rootdir=. apps\api\tests workers\ai\tests
-```
+Run the [manual validation checklist](docs/quality-gates.md) from the repository root. Record results in the related Issue or PR.
 
 Native Tauri builds also require Rust/Cargo via rustup. The JavaScript/Tauri CLI can be installed through npm, but the native shell will not build until the Rust toolchain is available.
 

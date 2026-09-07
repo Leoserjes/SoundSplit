@@ -1,18 +1,11 @@
 # SoundSplit API
 
-FastAPI service for harmonIA orchestration.
+FastAPI service for jobs, local uploads, artifact downloads, and cited knowledge search. Follow the repository [setup](../../README.md#getting-started), which installs the required local knowledge package.
 
-Responsibilities:
+Run from the repository root to keep `.env`, SQLite, and storage paths consistent:
 
-- Health checks
-- Analysis job creation
-- Job status
-- Artifact metadata
-- Upload and storage coordination
-
-## Local Development
-
-```bash
-uvicorn app.main:app --reload
+```powershell
+.venv\Scripts\python.exe -m uvicorn app.main:app --reload
 ```
 
+Inspect `/docs` and `/openapi.json` for route contracts. See [current architecture](../../docs/architecture.md) and [manual validation](../../docs/quality-gates.md).

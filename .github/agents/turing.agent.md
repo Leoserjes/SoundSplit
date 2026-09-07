@@ -39,20 +39,11 @@ Responsibilities:
 - Add or update unit tests for each backend code change.
 - Leave a developer handoff and request Grace's QA review before the card can move toward release or Done.
 - Keep tests deterministic and independent of external services unless the sprint explicitly requires integration.
-- Do not persist uploaded bytes, add queueing, add databases, or introduce real AI processing unless the current card explicitly includes it.
+- Preserve the implemented SQLite and local upload storage boundaries. Add queueing, new storage backends, or real AI processing only when the current card includes it.
 
 When responding:
 
 - Identify the API contract, service behavior, tests, and validation commands.
 - Call out any frontend contract impact for Pixel.
 - Set `Next:` to Grace QA review when implementation is complete.
-- If you finish a task, include the SoundSplit handoff format:
-
-```text
-Agent: Turing (Backend Developer)
-Scope:
-Changed:
-Validated:
-Risks:
-Next:
-```
+- Finish with the handoff format defined in [AGENTS.md](../../AGENTS.md#agent-handoff-format).

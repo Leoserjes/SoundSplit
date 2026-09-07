@@ -16,7 +16,7 @@ The project uses a single AI session that switches between agent roles as needed
 | 6 | Linus | Release Coordinator | Prepare releases, verify release readiness, run post-release checks, document failures, and suggest rollback when required |
 | 7 | Atlas | Agent Manager | Coordinate agent work, assign owners, track handoffs, and keep the delivery loop moving |
 
-The names above are stable agent identities. Use the short name as the `Agent Owner` value in GitHub Projects cards and issues.
+The names above are stable agent identities. Use the short name as the `Agent Owner` value in GitHub Projects cards and issues. Assign one primary owner and list supporting agents in the Issue body. Atlas coordinates delivery without overriding Maestro product decisions or Ada architecture decisions.
 
 ## Role-Switching Protocol
 
@@ -40,7 +40,7 @@ Because a single AI session fulfills all roles, it must clearly signal role tran
 - Developer and QA work must be separate agent passes for implementation cards. The agent who implements a change must not mark the card Done without a QA handoff unless the card is explicitly documentation-only or planning-only.
 - GitHub Project cards should move through `Ready` -> `In Progress` -> `QA` -> `Release Review` when release validation is needed -> `Done`. If the current project uses `In Review` instead of `QA`, treat that column as the QA column and label the handoff clearly.
 - Release validation must not substitute for developer testing or QA review. The Release Coordinator verifies evidence, release notes, artifacts, and rollback criteria after implementation and QA are complete.
-- Release rollback is never autonomous. The Release Coordinator documents the failure and suggests rollback for user/EM approval.
+- Release rollback is never autonomous. Record every post-release failure in an Issue. A rollback recommendation must include failed checks, impact, known cause, and recovery risks for user/EM approval. Database, storage, or user-data changes require EM review of recovery safety; if rollback is unsafe, pause the release and request a recovery plan.
 - Update documentation when architecture, product rules, workflows, or release policies change.
 - Do not introduce paid services, cloud dependencies, or heavy ML packages without an explicit EM + PM decision.
 
@@ -48,9 +48,9 @@ Because a single AI session fulfills all roles, it must clearly signal role tran
 
 ```text
 docs/architecture.md        Engineering Manager
-docs/mvp-roadmap.md         Product Manager + Engineering Manager
-docs/agents.md              Agent Manager
-docs/agent-workflows.md     Agent Manager
+GitHub Issues / roadmap    Product Manager + Engineering Manager
+AGENTS.md                  Agent Manager
+.github/agents/            Role-specific editor configuration
 docs/quality-gates.md       QA + Release Coordinator
 apps/api                    Backend Developer
 apps/desktop                Front-End Developer
@@ -75,14 +75,13 @@ For each feature or update:
 
 ## Quality Gates
 
-Every meaningful change should satisfy at least one validation gate:
+Follow [manual validation](docs/quality-gates.md). Validation is manual in the current phase; do not introduce CI unless requested. Record actual results and skipped checks in the related Issue/PR.
 
-- Documentation-only: links, structure, and terminology reviewed.
-- Python: `python -m compileall apps\api workers\ai`
-- API: FastAPI imports and route contracts validated.
-- Desktop: TypeScript build once dependencies are installed.
-- Contracts: JSON schemas parse successfully.
-- Release: tests, incident docs, and rollback suggestion policy reviewed before publishing a release.
+## Documentation and Versions
+
+Keep setup, implemented architecture, contracts, and reusable operating procedures with the code. GitHub Projects and Issues own active planning and handoffs; do not duplicate them in local status logs. AGENTS.md owns shared role and workflow rules. Editor agent files add specific context and reference this guide.
+
+Components may be versioned independently. The final application has its own release version; record its source commit and relevant component versions in release evidence. Do not synchronize all component versions just for consistency.
 
 ## Agent Handoff Format
 
@@ -120,6 +119,6 @@ For all other decisions within a role's defined responsibility, the agent should
 
 - harmonIA starts as a desktop app for producers and musicians.
 - The first ingestion mode is local audio upload, not YouTube or Spotify links.
-- Cloud/remote workers handle heavy AI processing in the initial product.
+- Cloud/remote workers are the intended direction for heavy AI processing. Current jobs use SQLite/local files and placeholder outputs; see docs/architecture.md.
 - The first AI pipeline can use mocked outputs, then proven existing models.
 - The first notation goal is MIDI/MusicXML before advanced score editing.
